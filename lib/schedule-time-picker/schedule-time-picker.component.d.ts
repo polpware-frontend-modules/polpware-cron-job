@@ -1,11 +1,12 @@
-import { EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
+import { DefaultFormBaseComponent, IDefaultFormInputs } from '@polpware/ngx-form-common';
 import { IntervalEnum, IScheduleTime, ScheduleTypeEnum } from '../interfaces';
 import * as i0 from "@angular/core";
-export interface ISettings {
-    hideConfirm?: boolean;
-    hideCancel?: boolean;
+export interface ISettings extends IDefaultFormInputs {
+    hideSubmitBtn?: boolean;
+    hideCancelBtn?: boolean;
 }
 export interface IFormFields {
     scheduleType: number;
@@ -24,12 +25,10 @@ export interface IFormFields {
     dayOfWeek: number;
     time: Date;
 }
-export declare class ScheduleTimePickerComponent implements OnInit, OnDestroy, OnChanges, IHasAlertFeature {
+export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponent implements OnInit, OnDestroy, OnChanges, IHasAlertFeature {
     private _builder;
     initSettings: ISettings;
     initValue: IScheduleTime;
-    onConfirm: EventEmitter<IScheduleTime>;
-    onCancel: EventEmitter<void>;
     settings: ISettings;
     defaultRes: {
         polpCronJob: {
@@ -115,16 +114,17 @@ export declare class ScheduleTimePickerComponent implements OnInit, OnDestroy, O
     alertProvider: AlertDefaultImpl;
     private _subr;
     constructor(_builder: FormBuilder);
-    get oneTimeValue(): IScheduleTime;
-    get recurrentValue(): IScheduleTime;
     get alerts(): import("@polpware/ngx-alert").IAlertItem[];
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(data: SimpleChanges): void;
     protected updateFormData(data: IScheduleTime): void;
     protected updateFieldVisibility(a: IFormFields): void;
+    protected computeOutValue(a: IFormFields): IScheduleTime;
+    protected getOneTimeValue(a: IFormFields): IScheduleTime;
+    protected getRecurrentValue(a: IFormFields): IScheduleTime;
     confirm(): void;
     cancel(): void;
     static ɵfac: i0.ɵɵFactoryDef<ScheduleTimePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; }, { "onConfirm": "onConfirm"; "onCancel": "onCancel"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; }, {}, never, never>;
 }

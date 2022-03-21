@@ -1,7 +1,9 @@
-import { ɵɵelementStart, ɵɵelement, ɵɵtext, ɵɵpipe, ɵɵelementEnd, ɵɵnextContext, ɵɵadvance, ɵɵpropertyInterpolate, ɵɵtextInterpolate1, ɵɵpipeBind4, ɵɵtemplate, ɵɵproperty, ɵɵpureFunction0, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, EventEmitter, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵNgOnChangesFeature, ɵsetClassMetadata, Component, Input, Output, ɵɵdefineInjectable, Injectable, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { __extends } from 'tslib';
+import { ɵɵelementStart, ɵɵelement, ɵɵtext, ɵɵpipe, ɵɵelementEnd, ɵɵnextContext, ɵɵadvance, ɵɵpropertyInterpolate, ɵɵtextInterpolate1, ɵɵpipeBind4, ɵɵtemplate, ɵɵproperty, ɵɵpureFunction0, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵNgOnChangesFeature, ɵsetClassMetadata, Component, Input, ɵɵdefineInjectable, Injectable, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
 import { FormBuilder, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, CheckboxControlValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { safeParseInt } from '@polpware/fe-utilities';
 import { AlertDefaultImpl } from '@polpware/ngx-alert';
+import { DefaultFormBaseComponent } from '@polpware/ngx-form-common';
 import { parseString, parseExpression } from 'cron-parser';
 import { NgIf, NgForOf, CommonModule } from '@angular/common';
 import { AutofocusDirective, FtAutofocusModule } from '@40three/ngx-autofocus-directive';
@@ -578,13 +580,13 @@ function ScheduleTimePickerComponent_div_15_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     var ctx_r14 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("ngIf", !ctx_r14.settings.hideCancel);
+    ɵɵproperty("ngIf", !ctx_r14.hideCancelBtn);
     ɵɵadvance(1);
-    ɵɵproperty("ngIf", !ctx_r14.settings.hideConfirm);
+    ɵɵproperty("ngIf", !ctx_r14.hideSubmitBtn);
 } }
 var defaultSettings = {
-    hideConfirm: false,
-    hideCancel: true
+    hideSubmitBtn: false,
+    hideCancelBtn: true
 };
 var formValidator = function (control) {
     var scheduleTypeVal = safeParseInt(control.get('scheduleType').value);
@@ -637,23 +639,23 @@ function mapToFormFields(data) {
         dayOfMonth: data.dayOfMonth
     };
 }
-var ScheduleTimePickerComponent = /** @class */ (function () {
+var ScheduleTimePickerComponent = /** @class */ (function (_super) {
+    __extends(ScheduleTimePickerComponent, _super);
     function ScheduleTimePickerComponent(_builder) {
-        this._builder = _builder;
-        this.initSettings = {};
-        this.initValue = null;
-        this.onConfirm = new EventEmitter();
-        this.onCancel = new EventEmitter();
-        this.settings = {};
-        this.defaultRes = defaultDict;
-        this.scheduleTypeOptions = [{
+        var _this = _super.call(this) || this;
+        _this._builder = _builder;
+        _this.initSettings = {};
+        _this.initValue = null;
+        _this.settings = {};
+        _this.defaultRes = defaultDict;
+        _this.scheduleTypeOptions = [{
                 value: ScheduleTypeEnum.OneTime,
                 text: 'polpCronJob.oneTimeSchedule'
             }, {
                 value: ScheduleTypeEnum.Recurrent,
                 text: 'polpCronJob.recurrentSchedule'
             }];
-        this.recurrenceOptions = [{
+        _this.recurrenceOptions = [{
                 value: IntervalEnum.Day,
                 text: 'polpCronJob.everyDay'
             }, {
@@ -669,10 +671,10 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
                 value: IntervalEnum.Custom,
                 text: 'polpCronJob.customInterval'
             }];
-        this.daysOfWeekOptions = getDaysOfWeek();
-        this.monthsOfYearOptions = getMonthsOfYear();
-        this.daysOfMonthOptions = getDaysOfMonth();
-        this.visibiltyCfg = {
+        _this.daysOfWeekOptions = getDaysOfWeek();
+        _this.monthsOfYearOptions = getMonthsOfYear();
+        _this.daysOfMonthOptions = getDaysOfMonth();
+        _this.visibiltyCfg = {
             scheduleType: true,
             recurrence: false,
             customExpr: false,
@@ -687,45 +689,9 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
             dayOfMonth: false,
             dayOfWeek: false
         };
-        this.alertProvider = new AlertDefaultImpl();
+        _this.alertProvider = new AlertDefaultImpl();
+        return _this;
     }
-    Object.defineProperty(ScheduleTimePickerComponent.prototype, "oneTimeValue", {
-        get: function () {
-            var a = this.form.value;
-            var timezone = safeParseInt(a.timezone);
-            return {
-                isRecurrent: false,
-                timezone: timezone,
-                startDate: a.startDate,
-                time: a.time
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ScheduleTimePickerComponent.prototype, "recurrentValue", {
-        get: function () {
-            var a = this.form.value;
-            var recurrence = safeParseInt(a.recurrence);
-            var timezone = safeParseInt(a.timezone);
-            return {
-                isRecurrent: true,
-                recurrence: recurrence,
-                holidays: a.excludeHolidays ? a.holidays : '',
-                excludeWeekends: a.excludeWeekends,
-                otherDays: a.excludeOthers ? a.otherDays : '',
-                timezone: timezone,
-                startDate: a.startDate,
-                endDate: a.endDate,
-                time: a.time,
-                monthOfYear: a.monthOfYear,
-                dayOfMonth: a.dayOfMonth,
-                dayOfWeek: a.dayOfWeek
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ScheduleTimePickerComponent.prototype, "alerts", {
         get: function () {
             return this.alertProvider.data;
@@ -736,12 +702,15 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
     ScheduleTimePickerComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.settings = Object.assign({}, defaultSettings, this.initSettings);
+        this.hideCancelBtn = this.settings.hideCancelBtn;
+        this.hideSubmitBtn = this.settings.hideSubmitBtn;
         var fields = mapToFormFields(this.initValue);
         this.form = this._builder.group(fields, { validators: [formValidator] });
         this.updateFieldVisibility(this.form.value);
         this._subr = this.form.valueChanges.subscribe(function (a) {
-            console.log(a);
             _this.updateFieldVisibility(a);
+            _this.notifyValidation();
+            _this.notifyValueChanges(_this.computeOutValue(a));
         });
     };
     ScheduleTimePickerComponent.prototype.ngOnDestroy = function () {
@@ -796,21 +765,52 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
             }
         }
     };
+    ScheduleTimePickerComponent.prototype.computeOutValue = function (a) {
+        var scheduleTypeVal = safeParseInt(a.scheduleType);
+        var output = scheduleTypeVal == ScheduleTypeEnum.OneTime ?
+            this.getOneTimeValue(a) : this.getRecurrentValue(a);
+        return output;
+    };
+    ScheduleTimePickerComponent.prototype.getOneTimeValue = function (a) {
+        var timezone = safeParseInt(a.timezone);
+        return {
+            isRecurrent: false,
+            timezone: timezone,
+            startDate: a.startDate,
+            time: a.time
+        };
+    };
+    ScheduleTimePickerComponent.prototype.getRecurrentValue = function (a) {
+        var recurrence = safeParseInt(a.recurrence);
+        var timezone = safeParseInt(a.timezone);
+        return {
+            isRecurrent: true,
+            recurrence: recurrence,
+            holidays: a.excludeHolidays ? a.holidays : '',
+            excludeWeekends: a.excludeWeekends,
+            otherDays: a.excludeOthers ? a.otherDays : '',
+            timezone: timezone,
+            startDate: a.startDate,
+            endDate: a.endDate,
+            time: a.time,
+            monthOfYear: a.monthOfYear,
+            dayOfMonth: a.dayOfMonth,
+            dayOfWeek: a.dayOfWeek
+        };
+    };
     ScheduleTimePickerComponent.prototype.confirm = function () {
         if (!this.form.valid) {
             this.alertProvider.warning('polpCronJob.errors.general', 5000);
             return;
         }
-        var a = this.form.value;
-        var scheduleTypeVal = safeParseInt(a.scheduleType);
-        var output = scheduleTypeVal == ScheduleTypeEnum.OneTime ? this.oneTimeValue : this.recurrentValue;
-        this.onConfirm.emit(output);
+        var output = this.computeOutValue(this.form.value);
+        this.onSave.emit(output);
     };
     ScheduleTimePickerComponent.prototype.cancel = function () {
         this.onCancel.emit();
     };
     ScheduleTimePickerComponent.ɵfac = function ScheduleTimePickerComponent_Factory(t) { return new (t || ScheduleTimePickerComponent)(ɵɵdirectiveInject(FormBuilder)); };
-    ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, outputs: { onConfirm: "onConfirm", onCancel: "onCancel" }, features: [ɵɵNgOnChangesFeature], decls: 16, vars: 16, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-timezone", 1, "col-12", "col-md-4", "col-form-label"], ["type", "number", "id", "schedule-timezone", "formControlName", "timezone", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
+    ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, features: [ɵɵInheritDefinitionFeature, ɵɵNgOnChangesFeature], decls: 16, vars: 16, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-timezone", 1, "col-12", "col-md-4", "col-form-label"], ["type", "number", "id", "schedule-timezone", "formControlName", "timezone", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
             ɵɵelementStart(0, "form", 0);
             ɵɵlistener("ngSubmit", function ScheduleTimePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
             ɵɵtemplate(1, ScheduleTimePickerComponent_div_1_Template, 7, 8, "div", 1);
@@ -860,10 +860,10 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
             ɵɵadvance(1);
             ɵɵproperty("ngForOf", ctx.alerts);
             ɵɵadvance(1);
-            ɵɵproperty("ngIf", !ctx.settings.hideConfirm || !ctx.settings.hideCancel);
+            ɵɵproperty("ngIf", !ctx.hideSubmitBtn || !ctx.hideCancelBtn);
         } }, directives: [ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, NgIf, NgForOf, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, AutofocusDirective, BsDatepickerInputDirective, BsDatepickerDirective, NumberValueAccessor, TimepickerComponent, CheckboxControlValueAccessor, AlertComponent], pipes: [HyperTranslatePipe], styles: [""] });
     return ScheduleTimePickerComponent;
-}());
+}(DefaultFormBaseComponent));
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ScheduleTimePickerComponent, [{
         type: Component,
         args: [{
@@ -875,10 +875,6 @@ var ScheduleTimePickerComponent = /** @class */ (function () {
             type: Input
         }], initValue: [{
             type: Input
-        }], onConfirm: [{
-            type: Output
-        }], onCancel: [{
-            type: Output
         }] }); })();
 
 var CronJobService = /** @class */ (function () {

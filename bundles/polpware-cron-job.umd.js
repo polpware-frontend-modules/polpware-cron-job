@@ -1,8 +1,222 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/forms'), require('@polpware/fe-utilities'), require('@polpware/ngx-alert'), require('cron-parser'), require('@angular/common'), require('@40three/ngx-autofocus-directive'), require('ngx-bootstrap/datepicker'), require('ngx-bootstrap/timepicker'), require('ngx-bootstrap/alert'), require('@polpware/ngx-i18n'), require('ngx-bootstrap/accordion'), require('ngx-bootstrap/buttons'), require('ngx-bootstrap/carousel'), require('ngx-bootstrap/collapse'), require('ngx-bootstrap/dropdown'), require('ngx-bootstrap/modal'), require('ngx-bootstrap/pagination'), require('ngx-bootstrap/popover'), require('ngx-bootstrap/progressbar'), require('ngx-bootstrap/tabs'), require('ngx-bootstrap/tooltip')) :
-    typeof define === 'function' && define.amd ? define('@polpware/cron-job', ['exports', '@angular/core', '@angular/forms', '@polpware/fe-utilities', '@polpware/ngx-alert', 'cron-parser', '@angular/common', '@40three/ngx-autofocus-directive', 'ngx-bootstrap/datepicker', 'ngx-bootstrap/timepicker', 'ngx-bootstrap/alert', '@polpware/ngx-i18n', 'ngx-bootstrap/accordion', 'ngx-bootstrap/buttons', 'ngx-bootstrap/carousel', 'ngx-bootstrap/collapse', 'ngx-bootstrap/dropdown', 'ngx-bootstrap/modal', 'ngx-bootstrap/pagination', 'ngx-bootstrap/popover', 'ngx-bootstrap/progressbar', 'ngx-bootstrap/tabs', 'ngx-bootstrap/tooltip'], factory) :
-    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['cron-job'] = {}), global.ng.core, global.ng.forms, global.feUtilities, global.ngxAlert, global.cronParser, global.ng.common, global.ngxAutofocusDirective, global.datepicker, global.timepicker, global.alert, global.ngxI18n, global.accordion, global.buttons, global.carousel, global.collapse, global.dropdown, global.modal, global.pagination, global.popover, global.progressbar, global.tabs, global.tooltip));
-}(this, (function (exports, core, forms, feUtilities, ngxAlert, cronParser, common, ngxAutofocusDirective, datepicker, timepicker, alert, ngxI18n, accordion, buttons, carousel, collapse, dropdown, modal, pagination, popover, progressbar, tabs, tooltip) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/forms'), require('@polpware/fe-utilities'), require('@polpware/ngx-alert'), require('@polpware/ngx-form-common'), require('cron-parser'), require('@angular/common'), require('@40three/ngx-autofocus-directive'), require('ngx-bootstrap/datepicker'), require('ngx-bootstrap/timepicker'), require('ngx-bootstrap/alert'), require('@polpware/ngx-i18n'), require('ngx-bootstrap/accordion'), require('ngx-bootstrap/buttons'), require('ngx-bootstrap/carousel'), require('ngx-bootstrap/collapse'), require('ngx-bootstrap/dropdown'), require('ngx-bootstrap/modal'), require('ngx-bootstrap/pagination'), require('ngx-bootstrap/popover'), require('ngx-bootstrap/progressbar'), require('ngx-bootstrap/tabs'), require('ngx-bootstrap/tooltip')) :
+    typeof define === 'function' && define.amd ? define('@polpware/cron-job', ['exports', '@angular/core', '@angular/forms', '@polpware/fe-utilities', '@polpware/ngx-alert', '@polpware/ngx-form-common', 'cron-parser', '@angular/common', '@40three/ngx-autofocus-directive', 'ngx-bootstrap/datepicker', 'ngx-bootstrap/timepicker', 'ngx-bootstrap/alert', '@polpware/ngx-i18n', 'ngx-bootstrap/accordion', 'ngx-bootstrap/buttons', 'ngx-bootstrap/carousel', 'ngx-bootstrap/collapse', 'ngx-bootstrap/dropdown', 'ngx-bootstrap/modal', 'ngx-bootstrap/pagination', 'ngx-bootstrap/popover', 'ngx-bootstrap/progressbar', 'ngx-bootstrap/tabs', 'ngx-bootstrap/tooltip'], factory) :
+    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['cron-job'] = {}), global.ng.core, global.ng.forms, global.feUtilities, global.ngxAlert, global.ngxFormCommon, global.cronParser, global.ng.common, global.ngxAutofocusDirective, global.datepicker, global.timepicker, global.alert, global.ngxI18n, global.accordion, global.buttons, global.carousel, global.collapse, global.dropdown, global.modal, global.pagination, global.popover, global.progressbar, global.tabs, global.tooltip));
+}(this, (function (exports, core, forms, feUtilities, ngxAlert, ngxFormCommon, cronParser, common, ngxAutofocusDirective, datepicker, timepicker, alert, ngxI18n, accordion, buttons, carousel, collapse, dropdown, modal, pagination, popover, progressbar, tabs, tooltip) { 'use strict';
+
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+    /* global Reflect, Promise */
+
+    var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+
+    function __extends(d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
+    function __rest(s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+            t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+                if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                    t[p[i]] = s[p[i]];
+            }
+        return t;
+    }
+
+    function __decorate(decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    }
+
+    function __param(paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    }
+
+    function __metadata(metadataKey, metadataValue) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+    }
+
+    function __awaiter(thisArg, _arguments, P, generator) {
+        function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    }
+
+    function __generator(thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    }
+
+    function __exportStar(m, exports) {
+        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+
+    function __values(o) {
+        var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+        if (m) return m.call(o);
+        if (o && typeof o.length === "number") return {
+            next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
+        };
+        throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+    }
+
+    function __read(o, n) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator];
+        if (!m) return o;
+        var i = m.call(o), r, ar = [], e;
+        try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+        }
+        catch (error) { e = { error: error }; }
+        finally {
+            try {
+                if (r && !r.done && (m = i["return"])) m.call(i);
+            }
+            finally { if (e) throw e.error; }
+        }
+        return ar;
+    }
+
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++)
+            ar = ar.concat(__read(arguments[i]));
+        return ar;
+    }
+
+    function __spreadArrays() {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    };
+
+    function __await(v) {
+        return this instanceof __await ? (this.v = v, this) : new __await(v);
+    }
+
+    function __asyncGenerator(thisArg, _arguments, generator) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+        function fulfill(value) { resume("next", value); }
+        function reject(value) { resume("throw", value); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+    }
+
+    function __asyncDelegator(o) {
+        var i, p;
+        return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+        function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+    }
+
+    function __asyncValues(o) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var m = o[Symbol.asyncIterator], i;
+        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+    }
+
+    function __makeTemplateObject(cooked, raw) {
+        if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+        return cooked;
+    };
+
+    function __importStar(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+        result.default = mod;
+        return result;
+    }
+
+    function __importDefault(mod) {
+        return (mod && mod.__esModule) ? mod : { default: mod };
+    }
+
+    function __classPrivateFieldGet(receiver, privateMap) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError("attempted to get private field on non-instance");
+        }
+        return privateMap.get(receiver);
+    }
+
+    function __classPrivateFieldSet(receiver, privateMap, value) {
+        if (!privateMap.has(receiver)) {
+            throw new TypeError("attempted to set private field on non-instance");
+        }
+        privateMap.set(receiver, value);
+        return value;
+    }
 
     var defaultDict = {
         polpCronJob: {
@@ -561,13 +775,13 @@
     } if (rf & 2) {
         var ctx_r14 = core.ɵɵnextContext();
         core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", !ctx_r14.settings.hideCancel);
+        core.ɵɵproperty("ngIf", !ctx_r14.hideCancelBtn);
         core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", !ctx_r14.settings.hideConfirm);
+        core.ɵɵproperty("ngIf", !ctx_r14.hideSubmitBtn);
     } }
     var defaultSettings = {
-        hideConfirm: false,
-        hideCancel: true
+        hideSubmitBtn: false,
+        hideCancelBtn: true
     };
     var formValidator = function (control) {
         var scheduleTypeVal = feUtilities.safeParseInt(control.get('scheduleType').value);
@@ -620,23 +834,23 @@
             dayOfMonth: data.dayOfMonth
         };
     }
-    var ScheduleTimePickerComponent = /** @class */ (function () {
+    var ScheduleTimePickerComponent = /** @class */ (function (_super) {
+        __extends(ScheduleTimePickerComponent, _super);
         function ScheduleTimePickerComponent(_builder) {
-            this._builder = _builder;
-            this.initSettings = {};
-            this.initValue = null;
-            this.onConfirm = new core.EventEmitter();
-            this.onCancel = new core.EventEmitter();
-            this.settings = {};
-            this.defaultRes = defaultDict;
-            this.scheduleTypeOptions = [{
+            var _this = _super.call(this) || this;
+            _this._builder = _builder;
+            _this.initSettings = {};
+            _this.initValue = null;
+            _this.settings = {};
+            _this.defaultRes = defaultDict;
+            _this.scheduleTypeOptions = [{
                     value: exports.ScheduleTypeEnum.OneTime,
                     text: 'polpCronJob.oneTimeSchedule'
                 }, {
                     value: exports.ScheduleTypeEnum.Recurrent,
                     text: 'polpCronJob.recurrentSchedule'
                 }];
-            this.recurrenceOptions = [{
+            _this.recurrenceOptions = [{
                     value: exports.IntervalEnum.Day,
                     text: 'polpCronJob.everyDay'
                 }, {
@@ -652,10 +866,10 @@
                     value: exports.IntervalEnum.Custom,
                     text: 'polpCronJob.customInterval'
                 }];
-            this.daysOfWeekOptions = getDaysOfWeek();
-            this.monthsOfYearOptions = getMonthsOfYear();
-            this.daysOfMonthOptions = getDaysOfMonth();
-            this.visibiltyCfg = {
+            _this.daysOfWeekOptions = getDaysOfWeek();
+            _this.monthsOfYearOptions = getMonthsOfYear();
+            _this.daysOfMonthOptions = getDaysOfMonth();
+            _this.visibiltyCfg = {
                 scheduleType: true,
                 recurrence: false,
                 customExpr: false,
@@ -670,45 +884,9 @@
                 dayOfMonth: false,
                 dayOfWeek: false
             };
-            this.alertProvider = new ngxAlert.AlertDefaultImpl();
+            _this.alertProvider = new ngxAlert.AlertDefaultImpl();
+            return _this;
         }
-        Object.defineProperty(ScheduleTimePickerComponent.prototype, "oneTimeValue", {
-            get: function () {
-                var a = this.form.value;
-                var timezone = feUtilities.safeParseInt(a.timezone);
-                return {
-                    isRecurrent: false,
-                    timezone: timezone,
-                    startDate: a.startDate,
-                    time: a.time
-                };
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(ScheduleTimePickerComponent.prototype, "recurrentValue", {
-            get: function () {
-                var a = this.form.value;
-                var recurrence = feUtilities.safeParseInt(a.recurrence);
-                var timezone = feUtilities.safeParseInt(a.timezone);
-                return {
-                    isRecurrent: true,
-                    recurrence: recurrence,
-                    holidays: a.excludeHolidays ? a.holidays : '',
-                    excludeWeekends: a.excludeWeekends,
-                    otherDays: a.excludeOthers ? a.otherDays : '',
-                    timezone: timezone,
-                    startDate: a.startDate,
-                    endDate: a.endDate,
-                    time: a.time,
-                    monthOfYear: a.monthOfYear,
-                    dayOfMonth: a.dayOfMonth,
-                    dayOfWeek: a.dayOfWeek
-                };
-            },
-            enumerable: true,
-            configurable: true
-        });
         Object.defineProperty(ScheduleTimePickerComponent.prototype, "alerts", {
             get: function () {
                 return this.alertProvider.data;
@@ -719,12 +897,15 @@
         ScheduleTimePickerComponent.prototype.ngOnInit = function () {
             var _this = this;
             this.settings = Object.assign({}, defaultSettings, this.initSettings);
+            this.hideCancelBtn = this.settings.hideCancelBtn;
+            this.hideSubmitBtn = this.settings.hideSubmitBtn;
             var fields = mapToFormFields(this.initValue);
             this.form = this._builder.group(fields, { validators: [formValidator] });
             this.updateFieldVisibility(this.form.value);
             this._subr = this.form.valueChanges.subscribe(function (a) {
-                console.log(a);
                 _this.updateFieldVisibility(a);
+                _this.notifyValidation();
+                _this.notifyValueChanges(_this.computeOutValue(a));
             });
         };
         ScheduleTimePickerComponent.prototype.ngOnDestroy = function () {
@@ -779,21 +960,52 @@
                 }
             }
         };
+        ScheduleTimePickerComponent.prototype.computeOutValue = function (a) {
+            var scheduleTypeVal = feUtilities.safeParseInt(a.scheduleType);
+            var output = scheduleTypeVal == exports.ScheduleTypeEnum.OneTime ?
+                this.getOneTimeValue(a) : this.getRecurrentValue(a);
+            return output;
+        };
+        ScheduleTimePickerComponent.prototype.getOneTimeValue = function (a) {
+            var timezone = feUtilities.safeParseInt(a.timezone);
+            return {
+                isRecurrent: false,
+                timezone: timezone,
+                startDate: a.startDate,
+                time: a.time
+            };
+        };
+        ScheduleTimePickerComponent.prototype.getRecurrentValue = function (a) {
+            var recurrence = feUtilities.safeParseInt(a.recurrence);
+            var timezone = feUtilities.safeParseInt(a.timezone);
+            return {
+                isRecurrent: true,
+                recurrence: recurrence,
+                holidays: a.excludeHolidays ? a.holidays : '',
+                excludeWeekends: a.excludeWeekends,
+                otherDays: a.excludeOthers ? a.otherDays : '',
+                timezone: timezone,
+                startDate: a.startDate,
+                endDate: a.endDate,
+                time: a.time,
+                monthOfYear: a.monthOfYear,
+                dayOfMonth: a.dayOfMonth,
+                dayOfWeek: a.dayOfWeek
+            };
+        };
         ScheduleTimePickerComponent.prototype.confirm = function () {
             if (!this.form.valid) {
                 this.alertProvider.warning('polpCronJob.errors.general', 5000);
                 return;
             }
-            var a = this.form.value;
-            var scheduleTypeVal = feUtilities.safeParseInt(a.scheduleType);
-            var output = scheduleTypeVal == exports.ScheduleTypeEnum.OneTime ? this.oneTimeValue : this.recurrentValue;
-            this.onConfirm.emit(output);
+            var output = this.computeOutValue(this.form.value);
+            this.onSave.emit(output);
         };
         ScheduleTimePickerComponent.prototype.cancel = function () {
             this.onCancel.emit();
         };
         ScheduleTimePickerComponent.ɵfac = function ScheduleTimePickerComponent_Factory(t) { return new (t || ScheduleTimePickerComponent)(core.ɵɵdirectiveInject(forms.FormBuilder)); };
-        ScheduleTimePickerComponent.ɵcmp = core.ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, outputs: { onConfirm: "onConfirm", onCancel: "onCancel" }, features: [core.ɵɵNgOnChangesFeature], decls: 16, vars: 16, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-timezone", 1, "col-12", "col-md-4", "col-form-label"], ["type", "number", "id", "schedule-timezone", "formControlName", "timezone", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
+        ScheduleTimePickerComponent.ɵcmp = core.ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, features: [core.ɵɵInheritDefinitionFeature, core.ɵɵNgOnChangesFeature], decls: 16, vars: 16, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-timezone", 1, "col-12", "col-md-4", "col-form-label"], ["type", "number", "id", "schedule-timezone", "formControlName", "timezone", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
                 core.ɵɵelementStart(0, "form", 0);
                 core.ɵɵlistener("ngSubmit", function ScheduleTimePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
                 core.ɵɵtemplate(1, ScheduleTimePickerComponent_div_1_Template, 7, 8, "div", 1);
@@ -843,10 +1055,10 @@
                 core.ɵɵadvance(1);
                 core.ɵɵproperty("ngForOf", ctx.alerts);
                 core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", !ctx.settings.hideConfirm || !ctx.settings.hideCancel);
+                core.ɵɵproperty("ngIf", !ctx.hideSubmitBtn || !ctx.hideCancelBtn);
             } }, directives: [forms.ɵangular_packages_forms_forms_y, forms.NgControlStatusGroup, forms.FormGroupDirective, common.NgIf, common.NgForOf, forms.DefaultValueAccessor, forms.RadioControlValueAccessor, forms.NgControlStatus, forms.FormControlName, forms.SelectControlValueAccessor, forms.NgSelectOption, forms.ɵangular_packages_forms_forms_x, ngxAutofocusDirective.AutofocusDirective, datepicker.BsDatepickerInputDirective, datepicker.BsDatepickerDirective, forms.NumberValueAccessor, timepicker.TimepickerComponent, forms.CheckboxControlValueAccessor, alert.AlertComponent], pipes: [ngxI18n.HyperTranslatePipe], styles: [""] });
         return ScheduleTimePickerComponent;
-    }());
+    }(ngxFormCommon.DefaultFormBaseComponent));
     /*@__PURE__*/ (function () { core.ɵsetClassMetadata(ScheduleTimePickerComponent, [{
             type: core.Component,
             args: [{
@@ -858,10 +1070,6 @@
                 type: core.Input
             }], initValue: [{
                 type: core.Input
-            }], onConfirm: [{
-                type: core.Output
-            }], onCancel: [{
-                type: core.Output
             }] }); })();
 
     var CronJobService = /** @class */ (function () {
