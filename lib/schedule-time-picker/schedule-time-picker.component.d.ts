@@ -18,7 +18,6 @@ export interface IFormFields {
     excludeOthers: boolean;
     otherDays: string;
     customExpr: string;
-    timezone: number;
     startDate: Date;
     endDate: Date;
     monthOfYear: number;

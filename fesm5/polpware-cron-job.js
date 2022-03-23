@@ -486,10 +486,6 @@ var formValidator = function (control) {
     if (scheduleTypeVal == 0) {
         return { scheduleType: true };
     }
-    var timezoneVal = safeParseInt(control.get('timezone').value);
-    if (timezoneVal > 13 || timezoneVal < -11) {
-        return { timezone: true };
-    }
     if (scheduleTypeVal == 2) { // one time
         var recurrenceVal = safeParseInt(control.get('recurrence').value);
         if (recurrenceVal == 0) {
