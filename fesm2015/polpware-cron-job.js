@@ -1,6 +1,6 @@
+import { MonthEnum, DayOfWeekEnum, safeParseInt, IntervalEnum, getDaysOfWeek, getMonthsOfYear, getDaysOfMonth } from '@polpware/fe-utilities';
 import { ɵɵelementStart, ɵɵelement, ɵɵtext, ɵɵpipe, ɵɵelementEnd, ɵɵnextContext, ɵɵadvance, ɵɵpropertyInterpolate, ɵɵtextInterpolate1, ɵɵpipeBind4, ɵɵtemplate, ɵɵproperty, ɵɵpureFunction0, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵNgOnChangesFeature, ɵsetClassMetadata, Component, Input, ɵɵdefineInjectable, Injectable, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
-import { FormBuilder, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, CheckboxControlValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { safeParseInt } from '@polpware/fe-utilities';
+import { FormBuilder, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, CheckboxControlValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertDefaultImpl } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent } from '@polpware/ngx-form-common';
 import { parseString, parseExpression } from 'cron-parser';
@@ -10,6 +10,7 @@ import { BsDatepickerInputDirective, BsDatepickerDirective, BsDatepickerModule }
 import { TimepickerComponent, TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { AlertComponent, AlertModule } from 'ngx-bootstrap/alert';
 import { HyperTranslatePipe, NgxI18nModule } from '@polpware/ngx-i18n';
+import * as moment from 'moment';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -31,7 +32,6 @@ const defaultDict = {
         monthOfYear: 'Month',
         dayOfMonth: 'Day',
         dayOfWeek: 'Day',
-        timezone: 'Timezone',
         time: 'Time',
         excludeHolidays: 'Exclude holidays',
         holidayLabel: 'Define the list of holidays',
@@ -70,94 +70,16 @@ const defaultDict = {
         errors: {
             general: 'Some of your inputs are not valid. Please check them!',
             customExprInvalid: 'Invalid CRON expression',
-            timezoneInvalid: 'Timezone is not valid. Only a number from -10 to 12 is accepted. ',
             scheduleTypeRequired: 'Please select one schedule type!'
         }
     }
 };
 
-/**
- Get the timezone offset between the local time and Utc
- */
-function getTimezoneOffset() {
-    const d = new Date();
-    const n = d.getTimezoneOffset();
-    return -Math.floor(n / 60);
-}
-var IntervalEnum;
-(function (IntervalEnum) {
-    IntervalEnum[IntervalEnum["Day"] = 10] = "Day";
-    IntervalEnum[IntervalEnum["Week"] = 50] = "Week";
-    IntervalEnum[IntervalEnum["Month"] = 100] = "Month";
-    IntervalEnum[IntervalEnum["Year"] = 500] = "Year";
-    IntervalEnum[IntervalEnum["Custom"] = 10000] = "Custom";
-})(IntervalEnum || (IntervalEnum = {}));
 var ScheduleTypeEnum;
 (function (ScheduleTypeEnum) {
     ScheduleTypeEnum[ScheduleTypeEnum["OneTime"] = 1] = "OneTime";
     ScheduleTypeEnum[ScheduleTypeEnum["Recurrent"] = 2] = "Recurrent";
 })(ScheduleTypeEnum || (ScheduleTypeEnum = {}));
-var MonthEnum;
-(function (MonthEnum) {
-    MonthEnum[MonthEnum["January"] = 1] = "January";
-    MonthEnum[MonthEnum["February"] = 2] = "February";
-    MonthEnum[MonthEnum["March"] = 3] = "March";
-    MonthEnum[MonthEnum["April"] = 4] = "April";
-    MonthEnum[MonthEnum["May"] = 5] = "May";
-    MonthEnum[MonthEnum["June"] = 6] = "June";
-    MonthEnum[MonthEnum["July"] = 7] = "July";
-    MonthEnum[MonthEnum["August"] = 8] = "August";
-    MonthEnum[MonthEnum["September"] = 9] = "September";
-    MonthEnum[MonthEnum["October"] = 10] = "October";
-    MonthEnum[MonthEnum["November"] = 11] = "November";
-    MonthEnum[MonthEnum["December"] = 12] = "December";
-})(MonthEnum || (MonthEnum = {}));
-function getMonthsOfYear() {
-    const ret = [];
-    for (var enumMember in MonthEnum) {
-        var isValueProperty = parseInt(enumMember, 10) >= 0;
-        if (isValueProperty) {
-            ret.push({
-                value: enumMember,
-                text: 'polpCronJob.' + MonthEnum[enumMember]
-            });
-        }
-    }
-    return ret;
-}
-var DayOfWeekEnum;
-(function (DayOfWeekEnum) {
-    DayOfWeekEnum[DayOfWeekEnum["Sunday"] = 0] = "Sunday";
-    DayOfWeekEnum[DayOfWeekEnum["Monday"] = 1] = "Monday";
-    DayOfWeekEnum[DayOfWeekEnum["Tuesday"] = 2] = "Tuesday";
-    DayOfWeekEnum[DayOfWeekEnum["Wednesday"] = 3] = "Wednesday";
-    DayOfWeekEnum[DayOfWeekEnum["Thursday"] = 4] = "Thursday";
-    DayOfWeekEnum[DayOfWeekEnum["Friday"] = 5] = "Friday";
-    DayOfWeekEnum[DayOfWeekEnum["Saturday"] = 6] = "Saturday";
-})(DayOfWeekEnum || (DayOfWeekEnum = {}));
-function getDaysOfWeek() {
-    const ret = [];
-    for (var enumMember in DayOfWeekEnum) {
-        var isValueProperty = parseInt(enumMember, 10) >= 0;
-        if (isValueProperty) {
-            ret.push({
-                value: enumMember,
-                text: 'polpCronJob.' + DayOfWeekEnum[enumMember]
-            });
-        }
-    }
-    return ret;
-}
-function getDaysOfMonth() {
-    const ret = [];
-    for (let i = 1; i < 32; i++) {
-        ret.push({
-            value: i,
-            text: i.toString()
-        });
-    }
-    return ret;
-}
 function getDefaultScheduleTime() {
     const today = new Date();
     const tomorrow = new Date(today);
@@ -169,7 +91,6 @@ function getDefaultScheduleTime() {
         excludeWeekends: false,
         otherDays: '',
         customExpr: '',
-        timezone: getTimezoneOffset(),
         startDate: tomorrow,
         endDate: null,
         time: today,
@@ -188,16 +109,16 @@ function ScheduleTimePickerComponent_div_1_div_5_Template(rf, ctx) { if (rf & 1)
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
-    const opt_r17 = ctx.$implicit;
-    const i_r18 = ctx.index;
-    const ctx_r15 = ɵɵnextContext(2);
+    const opt_r16 = ctx.$implicit;
+    const i_r17 = ctx.index;
+    const ctx_r14 = ɵɵnextContext(2);
     ɵɵadvance(1);
-    ɵɵpropertyInterpolate("id", "schedule-type-opt-" + i_r18);
-    ɵɵpropertyInterpolate("value", opt_r17.value);
+    ɵɵpropertyInterpolate("id", "schedule-type-opt-" + i_r17);
+    ɵɵpropertyInterpolate("value", opt_r16.value);
     ɵɵadvance(1);
-    ɵɵpropertyInterpolate("for", "schedule-type-opt-" + i_r18);
+    ɵɵpropertyInterpolate("for", "schedule-type-opt-" + i_r17);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(4, 4, opt_r17.text, null, null, ctx_r15.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(4, 4, opt_r16.text, null, null, ctx_r14.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_1_span_6_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "span", 12);
@@ -205,9 +126,9 @@ function ScheduleTimePickerComponent_div_1_span_6_Template(rf, ctx) { if (rf & 1
     ɵɵpipe(2, "hyperTrans");
     ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r16 = ɵɵnextContext(2);
+    const ctx_r15 = ɵɵnextContext(2);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.errors.scheduleTypeRequired", null, null, ctx_r16.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.errors.scheduleTypeRequired", null, null, ctx_r15.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -235,11 +156,11 @@ function ScheduleTimePickerComponent_div_2_option_8_Template(rf, ctx) { if (rf &
     ɵɵpipe(2, "hyperTrans");
     ɵɵelementEnd();
 } if (rf & 2) {
-    const opt_r20 = ctx.$implicit;
-    const ctx_r19 = ɵɵnextContext(2);
-    ɵɵpropertyInterpolate("value", opt_r20.value);
+    const opt_r19 = ctx.$implicit;
+    const ctx_r18 = ɵɵnextContext(2);
+    ɵɵpropertyInterpolate("value", opt_r19.value);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r20.text, null, null, ctx_r19.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r19.text, null, null, ctx_r18.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -269,9 +190,9 @@ function ScheduleTimePickerComponent_div_3_span_6_Template(rf, ctx) { if (rf & 1
     ɵɵpipe(2, "hyperTrans");
     ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r21 = ɵɵnextContext(2);
+    const ctx_r20 = ɵɵnextContext(2);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.errors.customExprInvalid", null, null, ctx_r21.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.errors.customExprInvalid", null, null, ctx_r20.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_3_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -317,11 +238,11 @@ function ScheduleTimePickerComponent_div_5_option_8_Template(rf, ctx) { if (rf &
     ɵɵpipe(2, "hyperTrans");
     ɵɵelementEnd();
 } if (rf & 2) {
-    const opt_r23 = ctx.$implicit;
-    const ctx_r22 = ɵɵnextContext(2);
-    ɵɵpropertyInterpolate("value", opt_r23.value);
+    const opt_r22 = ctx.$implicit;
+    const ctx_r21 = ɵɵnextContext(2);
+    ɵɵpropertyInterpolate("value", opt_r22.value);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r23.text, null, null, ctx_r22.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r22.text, null, null, ctx_r21.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -350,10 +271,10 @@ function ScheduleTimePickerComponent_div_6_option_8_Template(rf, ctx) { if (rf &
     ɵɵtext(1);
     ɵɵelementEnd();
 } if (rf & 2) {
-    const opt_r25 = ctx.$implicit;
-    ɵɵpropertyInterpolate("value", opt_r25.value);
+    const opt_r24 = ctx.$implicit;
+    ɵɵpropertyInterpolate("value", opt_r24.value);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", opt_r25.text, " ");
+    ɵɵtextInterpolate1(" ", opt_r24.text, " ");
 } }
 function ScheduleTimePickerComponent_div_6_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -383,11 +304,11 @@ function ScheduleTimePickerComponent_div_7_option_8_Template(rf, ctx) { if (rf &
     ɵɵpipe(2, "hyperTrans");
     ɵɵelementEnd();
 } if (rf & 2) {
-    const opt_r27 = ctx.$implicit;
-    const ctx_r26 = ɵɵnextContext(2);
-    ɵɵpropertyInterpolate("value", opt_r27.value);
+    const opt_r26 = ctx.$implicit;
+    const ctx_r25 = ɵɵnextContext(2);
+    ɵɵpropertyInterpolate("value", opt_r26.value);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r27.text, null, null, ctx_r26.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 2, opt_r26.text, null, null, ctx_r25.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_7_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -411,16 +332,6 @@ function ScheduleTimePickerComponent_div_7_Template(rf, ctx) { if (rf & 1) {
     ɵɵadvance(6);
     ɵɵproperty("ngForOf", ctx_r6.daysOfWeekOptions);
 } }
-function ScheduleTimePickerComponent_div_8_span_6_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "span", 12);
-    ɵɵtext(1);
-    ɵɵpipe(2, "hyperTrans");
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r28 = ɵɵnextContext(2);
-    ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.errors.timezoneInvalid", null, null, ctx_r28.defaultRes), " ");
-} }
 function ScheduleTimePickerComponent_div_8_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
     ɵɵelementStart(1, "label", 28);
@@ -428,16 +339,13 @@ function ScheduleTimePickerComponent_div_8_Template(rf, ctx) { if (rf & 1) {
     ɵɵpipe(3, "hyperTrans");
     ɵɵelementEnd();
     ɵɵelementStart(4, "div", 6);
-    ɵɵelement(5, "input", 29);
-    ɵɵtemplate(6, ScheduleTimePickerComponent_div_8_span_6_Template, 3, 6, "span", 8);
+    ɵɵelement(5, "timepicker", 29);
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r7 = ɵɵnextContext();
     ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.timezone", null, null, ctx_r7.defaultRes), " ");
-    ɵɵadvance(4);
-    ɵɵproperty("ngIf", ctx_r7.form.hasError("timezone") && (ctx_r7.form.get("timezone").dirty || ctx_r7.form.get("timezone").touched));
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 1, "polpCronJob.time", null, null, ctx_r7.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -446,23 +354,8 @@ function ScheduleTimePickerComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     ɵɵpipe(3, "hyperTrans");
     ɵɵelementEnd();
     ɵɵelementStart(4, "div", 6);
-    ɵɵelement(5, "timepicker", 31);
-    ɵɵelementEnd();
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r8 = ɵɵnextContext();
-    ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 1, "polpCronJob.time", null, null, ctx_r8.defaultRes), " ");
-} }
-function ScheduleTimePickerComponent_div_10_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "div", 4);
-    ɵɵelementStart(1, "label", 32);
-    ɵɵtext(2);
-    ɵɵpipe(3, "hyperTrans");
-    ɵɵelementEnd();
-    ɵɵelementStart(4, "div", 6);
-    ɵɵelementStart(5, "div", 33);
-    ɵɵelement(6, "input", 34);
+    ɵɵelementStart(5, "div", 31);
+    ɵɵelement(6, "input", 32);
     ɵɵelementEnd();
     ɵɵelementStart(7, "div");
     ɵɵtext(8);
@@ -471,11 +364,28 @@ function ScheduleTimePickerComponent_div_10_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
+    const ctx_r8 = ɵɵnextContext();
+    ɵɵadvance(2);
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.excludeHolidays", null, null, ctx_r8.defaultRes), " ");
+    ɵɵadvance(6);
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(9, 7, "polpCronJob.holidayLabel", null, null, ctx_r8.defaultRes), " ");
+} }
+function ScheduleTimePickerComponent_div_10_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 4);
+    ɵɵelementStart(1, "label", 33);
+    ɵɵtext(2);
+    ɵɵpipe(3, "hyperTrans");
+    ɵɵelementEnd();
+    ɵɵelementStart(4, "div", 6);
+    ɵɵelementStart(5, "div", 31);
+    ɵɵelement(6, "input", 34);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
     const ctx_r9 = ɵɵnextContext();
     ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.excludeHolidays", null, null, ctx_r9.defaultRes), " ");
-    ɵɵadvance(6);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(9, 7, "polpCronJob.holidayLabel", null, null, ctx_r9.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 1, "polpCronJob.excludeWeekends", null, null, ctx_r9.defaultRes), " ");
 } }
 function ScheduleTimePickerComponent_div_11_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
@@ -484,25 +394,8 @@ function ScheduleTimePickerComponent_div_11_Template(rf, ctx) { if (rf & 1) {
     ɵɵpipe(3, "hyperTrans");
     ɵɵelementEnd();
     ɵɵelementStart(4, "div", 6);
-    ɵɵelementStart(5, "div", 33);
+    ɵɵelementStart(5, "div", 31);
     ɵɵelement(6, "input", 36);
-    ɵɵelementEnd();
-    ɵɵelementEnd();
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r10 = ɵɵnextContext();
-    ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 1, "polpCronJob.excludeWeekends", null, null, ctx_r10.defaultRes), " ");
-} }
-function ScheduleTimePickerComponent_div_12_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "div", 4);
-    ɵɵelementStart(1, "label", 37);
-    ɵɵtext(2);
-    ɵɵpipe(3, "hyperTrans");
-    ɵɵelementEnd();
-    ɵɵelementStart(4, "div", 6);
-    ɵɵelementStart(5, "div", 33);
-    ɵɵelement(6, "input", 38);
     ɵɵelementEnd();
     ɵɵelementStart(7, "div");
     ɵɵtext(8);
@@ -511,77 +404,77 @@ function ScheduleTimePickerComponent_div_12_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r11 = ɵɵnextContext();
+    const ctx_r10 = ɵɵnextContext();
     ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.excludeOthers", null, null, ctx_r11.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.excludeOthers", null, null, ctx_r10.defaultRes), " ");
     ɵɵadvance(6);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(9, 7, "polpCronJob.otherLabel", null, null, ctx_r11.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(9, 7, "polpCronJob.otherLabel", null, null, ctx_r10.defaultRes), " ");
 } }
-function ScheduleTimePickerComponent_div_13_Template(rf, ctx) { if (rf & 1) {
+function ScheduleTimePickerComponent_div_12_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 4);
-    ɵɵelementStart(1, "label", 39);
+    ɵɵelementStart(1, "label", 37);
     ɵɵtext(2);
     ɵɵpipe(3, "hyperTrans");
     ɵɵelementEnd();
     ɵɵelementStart(4, "div", 6);
-    ɵɵelement(5, "input", 40);
+    ɵɵelement(5, "input", 38);
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
-    const ctx_r12 = ɵɵnextContext();
+    const ctx_r11 = ɵɵnextContext();
     ɵɵadvance(2);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.endDate", null, null, ctx_r12.defaultRes), " ");
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 2, "polpCronJob.endDate", null, null, ctx_r11.defaultRes), " ");
     ɵɵadvance(3);
     ɵɵproperty("bsConfig", ɵɵpureFunction0(7, _c0));
 } }
-function ScheduleTimePickerComponent_ng_container_14_Template(rf, ctx) { if (rf & 1) {
+function ScheduleTimePickerComponent_ng_container_13_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementContainerStart(0);
-    ɵɵelementStart(1, "alert", 41);
+    ɵɵelementStart(1, "alert", 39);
     ɵɵtext(2);
     ɵɵpipe(3, "hyperTrans");
     ɵɵelementEnd();
     ɵɵelementContainerEnd();
 } if (rf & 2) {
-    const a_r29 = ctx.$implicit;
+    const a_r27 = ctx.$implicit;
+    const ctx_r12 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵproperty("type", a_r27.type)("dismissOnTimeout", a_r27.timeout);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 3, a_r27.message, null, null, ctx_r12.defaultRes), " ");
+} }
+function ScheduleTimePickerComponent_div_14_button_1_Template(rf, ctx) { if (rf & 1) {
+    const _r31 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "button", 43);
+    ɵɵlistener("click", function ScheduleTimePickerComponent_div_14_button_1_Template_button_click_0_listener() { ɵɵrestoreView(_r31); const ctx_r30 = ɵɵnextContext(2); return ctx_r30.cancel(); });
+    ɵɵtext(1);
+    ɵɵpipe(2, "hyperTrans");
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r28 = ɵɵnextContext(2);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.cancelBtn", null, null, ctx_r28.defaultRes), " ");
+} }
+function ScheduleTimePickerComponent_div_14_button_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "button", 44);
+    ɵɵtext(1);
+    ɵɵpipe(2, "hyperTrans");
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r29 = ɵɵnextContext(2);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.submitBtn", null, null, ctx_r29.defaultRes), " ");
+} }
+function ScheduleTimePickerComponent_div_14_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 40);
+    ɵɵtemplate(1, ScheduleTimePickerComponent_div_14_button_1_Template, 3, 6, "button", 41);
+    ɵɵtemplate(2, ScheduleTimePickerComponent_div_14_button_2_Template, 3, 6, "button", 42);
+    ɵɵelementEnd();
+} if (rf & 2) {
     const ctx_r13 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("type", a_r29.type)("dismissOnTimeout", a_r29.timeout);
+    ɵɵproperty("ngIf", !ctx_r13.hideCancelBtn);
     ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(3, 3, a_r29.message, null, null, ctx_r13.defaultRes), " ");
-} }
-function ScheduleTimePickerComponent_div_15_button_1_Template(rf, ctx) { if (rf & 1) {
-    const _r33 = ɵɵgetCurrentView();
-    ɵɵelementStart(0, "button", 45);
-    ɵɵlistener("click", function ScheduleTimePickerComponent_div_15_button_1_Template_button_click_0_listener() { ɵɵrestoreView(_r33); const ctx_r32 = ɵɵnextContext(2); return ctx_r32.cancel(); });
-    ɵɵtext(1);
-    ɵɵpipe(2, "hyperTrans");
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r30 = ɵɵnextContext(2);
-    ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.cancelBtn", null, null, ctx_r30.defaultRes), " ");
-} }
-function ScheduleTimePickerComponent_div_15_button_2_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "button", 46);
-    ɵɵtext(1);
-    ɵɵpipe(2, "hyperTrans");
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r31 = ɵɵnextContext(2);
-    ɵɵadvance(1);
-    ɵɵtextInterpolate1(" ", ɵɵpipeBind4(2, 1, "polpCronJob.submitBtn", null, null, ctx_r31.defaultRes), " ");
-} }
-function ScheduleTimePickerComponent_div_15_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "div", 42);
-    ɵɵtemplate(1, ScheduleTimePickerComponent_div_15_button_1_Template, 3, 6, "button", 43);
-    ɵɵtemplate(2, ScheduleTimePickerComponent_div_15_button_2_Template, 3, 6, "button", 44);
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r14 = ɵɵnextContext();
-    ɵɵadvance(1);
-    ɵɵproperty("ngIf", !ctx_r14.hideCancelBtn);
-    ɵɵadvance(1);
-    ɵɵproperty("ngIf", !ctx_r14.hideSubmitBtn);
+    ɵɵproperty("ngIf", !ctx_r13.hideSubmitBtn);
 } }
 const defaultSettings = {
     hideSubmitBtn: false,
@@ -629,7 +522,6 @@ function mapToFormFields(data) {
         excludeOthers: !!data.otherDays,
         otherDays: data.otherDays,
         customExpr: data.customExpr,
-        timezone: data.timezone,
         startDate: data.startDate,
         endDate: data.endDate,
         time: data.time,
@@ -679,7 +571,6 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
             excludeHolidays: false,
             excludeWeekends: false,
             excludeOthers: false,
-            timezone: false,
             startDate: false,
             endDate: false,
             time: false,
@@ -709,7 +600,7 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
         this._subr.unsubscribe();
     }
     ngOnChanges(data) {
-        if (!data.initValue.firstChange) {
+        if (data && data.initValue && !data.initValue.firstChange) {
             this.updateFormData(data.initValue.currentValue);
         }
     }
@@ -730,7 +621,6 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
         if (scheduleTypeVal == 1) {
             this.visibiltyCfg.startDate = true;
             this.visibiltyCfg.time = true;
-            this.visibiltyCfg.timezone = true;
         }
         else {
             this.visibiltyCfg.recurrence = true;
@@ -739,7 +629,6 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
             this.visibiltyCfg.excludeOthers = true;
             this.visibiltyCfg.endDate = true;
             this.visibiltyCfg.time = true;
-            this.visibiltyCfg.timezone = true;
             const recurrentVal = safeParseInt(a.recurrence);
             if (recurrentVal == IntervalEnum.Year) {
                 this.visibiltyCfg.monthOfYear = true;
@@ -764,24 +653,20 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
         return output;
     }
     getOneTimeValue(a) {
-        const timezone = safeParseInt(a.timezone);
         return {
             isRecurrent: false,
-            timezone: timezone,
             startDate: a.startDate,
             time: a.time
         };
     }
     getRecurrentValue(a) {
         const recurrence = safeParseInt(a.recurrence);
-        const timezone = safeParseInt(a.timezone);
         return {
             isRecurrent: true,
             recurrence: recurrence,
             holidays: a.excludeHolidays ? a.holidays : '',
             excludeWeekends: a.excludeWeekends,
             otherDays: a.excludeOthers ? a.otherDays : '',
-            timezone: timezone,
             startDate: a.startDate,
             endDate: a.endDate,
             time: a.time,
@@ -803,7 +688,7 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
     }
 }
 ScheduleTimePickerComponent.ɵfac = function ScheduleTimePickerComponent_Factory(t) { return new (t || ScheduleTimePickerComponent)(ɵɵdirectiveInject(FormBuilder)); };
-ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, features: [ɵɵInheritDefinitionFeature, ɵɵNgOnChangesFeature], decls: 16, vars: 16, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-timezone", 1, "col-12", "col-md-4", "col-form-label"], ["type", "number", "id", "schedule-timezone", "formControlName", "timezone", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
+ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, features: [ɵɵInheritDefinitionFeature, ɵɵNgOnChangesFeature], decls: 15, vars: 15, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "form", 0);
         ɵɵlistener("ngSubmit", function ScheduleTimePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
         ɵɵtemplate(1, ScheduleTimePickerComponent_div_1_Template, 7, 8, "div", 1);
@@ -813,14 +698,13 @@ ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePick
         ɵɵtemplate(5, ScheduleTimePickerComponent_div_5_Template, 9, 7, "div", 1);
         ɵɵtemplate(6, ScheduleTimePickerComponent_div_6_Template, 9, 7, "div", 1);
         ɵɵtemplate(7, ScheduleTimePickerComponent_div_7_Template, 9, 7, "div", 1);
-        ɵɵtemplate(8, ScheduleTimePickerComponent_div_8_Template, 7, 7, "div", 1);
-        ɵɵtemplate(9, ScheduleTimePickerComponent_div_9_Template, 6, 6, "div", 1);
-        ɵɵtemplate(10, ScheduleTimePickerComponent_div_10_Template, 10, 12, "div", 1);
-        ɵɵtemplate(11, ScheduleTimePickerComponent_div_11_Template, 7, 6, "div", 1);
-        ɵɵtemplate(12, ScheduleTimePickerComponent_div_12_Template, 10, 12, "div", 1);
-        ɵɵtemplate(13, ScheduleTimePickerComponent_div_13_Template, 6, 8, "div", 1);
-        ɵɵtemplate(14, ScheduleTimePickerComponent_ng_container_14_Template, 4, 8, "ng-container", 2);
-        ɵɵtemplate(15, ScheduleTimePickerComponent_div_15_Template, 3, 2, "div", 3);
+        ɵɵtemplate(8, ScheduleTimePickerComponent_div_8_Template, 6, 6, "div", 1);
+        ɵɵtemplate(9, ScheduleTimePickerComponent_div_9_Template, 10, 12, "div", 1);
+        ɵɵtemplate(10, ScheduleTimePickerComponent_div_10_Template, 7, 6, "div", 1);
+        ɵɵtemplate(11, ScheduleTimePickerComponent_div_11_Template, 10, 12, "div", 1);
+        ɵɵtemplate(12, ScheduleTimePickerComponent_div_12_Template, 6, 8, "div", 1);
+        ɵɵtemplate(13, ScheduleTimePickerComponent_ng_container_13_Template, 4, 8, "ng-container", 2);
+        ɵɵtemplate(14, ScheduleTimePickerComponent_div_14_Template, 3, 2, "div", 3);
         ɵɵelementEnd();
     } if (rf & 2) {
         ɵɵproperty("formGroup", ctx.form);
@@ -839,8 +723,6 @@ ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePick
         ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.visibiltyCfg.dayOfWeek);
         ɵɵadvance(1);
-        ɵɵproperty("ngIf", ctx.visibiltyCfg.timezone);
-        ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.visibiltyCfg.time);
         ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.visibiltyCfg.excludeHolidays);
@@ -854,7 +736,7 @@ ScheduleTimePickerComponent.ɵcmp = ɵɵdefineComponent({ type: ScheduleTimePick
         ɵɵproperty("ngForOf", ctx.alerts);
         ɵɵadvance(1);
         ɵɵproperty("ngIf", !ctx.hideSubmitBtn || !ctx.hideCancelBtn);
-    } }, directives: [ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, NgIf, NgForOf, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, AutofocusDirective, BsDatepickerInputDirective, BsDatepickerDirective, NumberValueAccessor, TimepickerComponent, CheckboxControlValueAccessor, AlertComponent], pipes: [HyperTranslatePipe], styles: [""] });
+    } }, directives: [ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, NgIf, NgForOf, DefaultValueAccessor, RadioControlValueAccessor, NgControlStatus, FormControlName, SelectControlValueAccessor, NgSelectOption, ɵangular_packages_forms_forms_x, AutofocusDirective, BsDatepickerInputDirective, BsDatepickerDirective, TimepickerComponent, CheckboxControlValueAccessor, AlertComponent], pipes: [HyperTranslatePipe], styles: [""] });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ScheduleTimePickerComponent, [{
         type: Component,
         args: [{
@@ -896,29 +778,27 @@ class CronJobService {
         }
         // A utc time 
         const today = new Date();
-        today.setHours(a.fields.hour[0] || 0);
-        today.setMinutes(a.fields.minute[0] || 0);
-        // Timezone
-        today.setHours((today.getHours() + target.timezone + 24) % 24);
+        const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
         // Time
-        target.time = today;
+        target.time = timeInUtc;
     }
     composeCronExpr(source) {
         // IsRecurrent true
         // Convert it into Utc time
         const utc = new Date(source.time);
-        utc.setHours((utc.getHours() - source.timezone + 24) % 24);
+        const timeWrapper = moment(utc);
+        const hour = timeWrapper.utc().hour();
         if (source.recurrence == IntervalEnum.Year) {
-            return `${utc.getMinutes()} ${utc.getHours()} ${source.dayOfMonth} ${source.monthOfYear} *`;
+            return `${utc.getMinutes()} ${hour} ${source.dayOfMonth} ${source.monthOfYear} *`;
         }
         else if (source.recurrence == IntervalEnum.Month) {
-            return `${utc.getMinutes()} ${utc.getHours()} ${source.dayOfMonth} * *`;
+            return `${utc.getMinutes()} ${hour} ${source.dayOfMonth} * *`;
         }
         else if (source.recurrence == IntervalEnum.Week) {
-            return `${utc.getMinutes()} ${utc.getHours()} * * ${source.dayOfWeek}`;
+            return `${utc.getMinutes()} ${hour} * * ${source.dayOfWeek}`;
         }
         else if (source.recurrence == IntervalEnum.Day) {
-            return `${utc.getMinutes()} ${utc.getHours()} * * *`;
+            return `${utc.getMinutes()} ${hour} * * *`;
         }
         else if (source.recurrence == IntervalEnum.Custom) {
             return source.customExpr;
@@ -1019,5 +899,5 @@ PolpBsCronJobModule.ɵinj = ɵɵdefineInjector({ factory: function PolpBsCronJob
  * Generated bundle index. Do not edit.
  */
 
-export { CronJobService, DayOfWeekEnum, IntervalEnum, MonthEnum, PolpBsCronJobModule, ScheduleTimePickerComponent, ScheduleTypeEnum, defaultDict, getDaysOfMonth, getDaysOfWeek, getDefaultScheduleTime, getMonthsOfYear, getTimezoneOffset };
+export { CronJobService, PolpBsCronJobModule, ScheduleTimePickerComponent, ScheduleTypeEnum, defaultDict, getDefaultScheduleTime };
 //# sourceMappingURL=polpware-cron-job.js.map

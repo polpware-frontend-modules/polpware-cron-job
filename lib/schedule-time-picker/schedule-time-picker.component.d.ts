@@ -1,8 +1,9 @@
 import { OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IntervalEnum } from '@polpware/fe-utilities';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent, IDefaultFormInputs } from '@polpware/ngx-form-common';
-import { IntervalEnum, IScheduleTime, ScheduleTypeEnum } from '../interfaces';
+import { IScheduleTime, ScheduleTypeEnum } from '../interfaces';
 import * as i0 from "@angular/core";
 export interface ISettings extends IDefaultFormInputs {
     hideSubmitBtn?: boolean;
@@ -39,7 +40,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
             monthOfYear: string;
             dayOfMonth: string;
             dayOfWeek: string;
-            timezone: string;
             time: string;
             excludeHolidays: string;
             holidayLabel: string;
@@ -78,7 +78,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
             errors: {
                 general: string;
                 customExprInvalid: string;
-                timezoneInvalid: string;
                 scheduleTypeRequired: string;
             };
         };
@@ -102,7 +101,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
         excludeHolidays: boolean;
         excludeWeekends: boolean;
         excludeOthers: boolean;
-        timezone: boolean;
         startDate: boolean;
         endDate: boolean;
         time: boolean;

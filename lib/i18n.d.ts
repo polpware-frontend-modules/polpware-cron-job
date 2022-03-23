@@ -7,7 +7,6 @@ export declare const defaultDict: {
         monthOfYear: string;
         dayOfMonth: string;
         dayOfWeek: string;
-        timezone: string;
         time: string;
         excludeHolidays: string;
         holidayLabel: string;
@@ -46,7 +45,6 @@ export declare const defaultDict: {
         errors: {
             general: string;
             customExprInvalid: string;
-            timezoneInvalid: string;
             scheduleTypeRequired: string;
         };
     };
