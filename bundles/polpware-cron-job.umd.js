@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@polpware/fe-utilities'), require('@angular/core'), require('@angular/forms'), require('@polpware/ngx-alert'), require('@polpware/ngx-form-common'), require('cron-parser'), require('@angular/common'), require('@40three/ngx-autofocus-directive'), require('ngx-bootstrap/datepicker'), require('ngx-bootstrap/timepicker'), require('ngx-bootstrap/alert'), require('@polpware/ngx-i18n'), require('moment'), require('ngx-bootstrap/accordion'), require('ngx-bootstrap/buttons'), require('ngx-bootstrap/carousel'), require('ngx-bootstrap/collapse'), require('ngx-bootstrap/dropdown'), require('ngx-bootstrap/modal'), require('ngx-bootstrap/pagination'), require('ngx-bootstrap/popover'), require('ngx-bootstrap/progressbar'), require('ngx-bootstrap/tabs'), require('ngx-bootstrap/tooltip')) :
-    typeof define === 'function' && define.amd ? define('@polpware/cron-job', ['exports', '@polpware/fe-utilities', '@angular/core', '@angular/forms', '@polpware/ngx-alert', '@polpware/ngx-form-common', 'cron-parser', '@angular/common', '@40three/ngx-autofocus-directive', 'ngx-bootstrap/datepicker', 'ngx-bootstrap/timepicker', 'ngx-bootstrap/alert', '@polpware/ngx-i18n', 'moment', 'ngx-bootstrap/accordion', 'ngx-bootstrap/buttons', 'ngx-bootstrap/carousel', 'ngx-bootstrap/collapse', 'ngx-bootstrap/dropdown', 'ngx-bootstrap/modal', 'ngx-bootstrap/pagination', 'ngx-bootstrap/popover', 'ngx-bootstrap/progressbar', 'ngx-bootstrap/tabs', 'ngx-bootstrap/tooltip'], factory) :
-    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['cron-job'] = {}), global.feUtilities, global.ng.core, global.ng.forms, global.ngxAlert, global.ngxFormCommon, global.cronParser, global.ng.common, global.ngxAutofocusDirective, global.datepicker, global.timepicker, global.alert, global.ngxI18n, global.moment, global.accordion, global.buttons, global.carousel, global.collapse, global.dropdown, global.modal, global.pagination, global.popover, global.progressbar, global.tabs, global.tooltip));
-}(this, (function (exports, feUtilities, core, forms, ngxAlert, ngxFormCommon, cronParser, common, ngxAutofocusDirective, datepicker, timepicker, alert, ngxI18n, moment, accordion, buttons, carousel, collapse, dropdown, modal, pagination, popover, progressbar, tabs, tooltip) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@polpware/fe-utilities'), require('@angular/core'), require('@angular/forms'), require('@polpware/ngx-alert'), require('@polpware/ngx-form-common'), require('cron-parser'), require('@fortawesome/free-solid-svg-icons'), require('@polpware/bs-components'), require('ngx-bootstrap/modal'), require('moment'), require('@angular/common'), require('ngx-bootstrap/accordion'), require('ngx-bootstrap/alert'), require('ngx-bootstrap/buttons'), require('ngx-bootstrap/carousel'), require('ngx-bootstrap/collapse'), require('ngx-bootstrap/datepicker'), require('ngx-bootstrap/dropdown'), require('ngx-bootstrap/pagination'), require('ngx-bootstrap/popover'), require('ngx-bootstrap/progressbar'), require('ngx-bootstrap/tabs'), require('ngx-bootstrap/timepicker'), require('ngx-bootstrap/tooltip'), require('@40three/ngx-autofocus-directive'), require('@polpware/ngx-i18n'), require('@polpware/modal-directives')) :
+    typeof define === 'function' && define.amd ? define('@polpware/cron-job', ['exports', '@polpware/fe-utilities', '@angular/core', '@angular/forms', '@polpware/ngx-alert', '@polpware/ngx-form-common', 'cron-parser', '@fortawesome/free-solid-svg-icons', '@polpware/bs-components', 'ngx-bootstrap/modal', 'moment', '@angular/common', 'ngx-bootstrap/accordion', 'ngx-bootstrap/alert', 'ngx-bootstrap/buttons', 'ngx-bootstrap/carousel', 'ngx-bootstrap/collapse', 'ngx-bootstrap/datepicker', 'ngx-bootstrap/dropdown', 'ngx-bootstrap/pagination', 'ngx-bootstrap/popover', 'ngx-bootstrap/progressbar', 'ngx-bootstrap/tabs', 'ngx-bootstrap/timepicker', 'ngx-bootstrap/tooltip', '@40three/ngx-autofocus-directive', '@polpware/ngx-i18n', '@polpware/modal-directives'], factory) :
+    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['cron-job'] = {}), global.feUtilities, global.ng.core, global.ng.forms, global.ngxAlert, global.ngxFormCommon, global.cronParser, global.freeSolidSvgIcons, global.bsComponents, global.modal, global.moment, global.ng.common, global.accordion, global.alert, global.buttons, global.carousel, global.collapse, global.datepicker, global.dropdown, global.pagination, global.popover, global.progressbar, global.tabs, global.timepicker, global.tooltip, global.ngxAutofocusDirective, global.ngxI18n, global.modalDirectives));
+}(this, (function (exports, feUtilities, core, forms, ngxAlert, ngxFormCommon, cronParser, freeSolidSvgIcons, bsComponents, modal, moment, common, accordion, alert, buttons, carousel, collapse, datepicker, dropdown, pagination, popover, progressbar, tabs, timepicker, tooltip, ngxAutofocusDirective, ngxI18n, modalDirectives) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -295,382 +295,6 @@
         };
     }
 
-    function ScheduleTimePickerComponent_div_1_div_5_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 9);
-        core.ɵɵelement(1, "input", 10);
-        core.ɵɵelementStart(2, "label", 11);
-        core.ɵɵtext(3);
-        core.ɵɵpipe(4, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var opt_r16 = ctx.$implicit;
-        var i_r17 = ctx.index;
-        var ctx_r14 = core.ɵɵnextContext(2);
-        core.ɵɵadvance(1);
-        core.ɵɵpropertyInterpolate("id", "schedule-type-opt-" + i_r17);
-        core.ɵɵpropertyInterpolate("value", opt_r16.value);
-        core.ɵɵadvance(1);
-        core.ɵɵpropertyInterpolate("for", "schedule-type-opt-" + i_r17);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(4, 4, opt_r16.text, null, null, ctx_r14.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_1_span_6_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "span", 12);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r15 = core.ɵɵnextContext(2);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 1, "polpCronJob.errors.scheduleTypeRequired", null, null, ctx_r15.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_1_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 5);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵtemplate(5, ScheduleTimePickerComponent_div_1_div_5_Template, 5, 9, "div", 7);
-        core.ɵɵtemplate(6, ScheduleTimePickerComponent_div_1_span_6_Template, 3, 6, "span", 8);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r0 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 3, "polpCronJob.scheduleType", null, null, ctx_r0.defaultRes), " ");
-        core.ɵɵadvance(3);
-        core.ɵɵproperty("ngForOf", ctx_r0.scheduleTypeOptions);
-        core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", ctx_r0.form.hasError("scheduleType") && (ctx_r0.form.get("scheduleType").dirty || ctx_r0.form.get("scheduleType").touched));
-    } }
-    function ScheduleTimePickerComponent_div_2_option_8_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "option", 17);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var opt_r19 = ctx.$implicit;
-        var ctx_r18 = core.ɵɵnextContext(2);
-        core.ɵɵpropertyInterpolate("value", opt_r19.value);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 2, opt_r19.text, null, null, ctx_r18.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_2_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 13);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "select", 14);
-        core.ɵɵelementStart(6, "option", 15);
-        core.ɵɵtext(7, "...");
-        core.ɵɵelementEnd();
-        core.ɵɵtemplate(8, ScheduleTimePickerComponent_div_2_option_8_Template, 3, 7, "option", 16);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r1 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.recurrence", null, null, ctx_r1.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵproperty("ngForOf", ctx_r1.recurrenceOptions);
-    } }
-    function ScheduleTimePickerComponent_div_3_span_6_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "span", 12);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r20 = core.ɵɵnextContext(2);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 1, "polpCronJob.errors.customExprInvalid", null, null, ctx_r20.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_3_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 18);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelement(5, "input", 19);
-        core.ɵɵtemplate(6, ScheduleTimePickerComponent_div_3_span_6_Template, 3, 6, "span", 8);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r2 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 3, "polpCronJob.customExpr", null, null, ctx_r2.defaultRes), " ");
-        core.ɵɵadvance(3);
-        core.ɵɵproperty("autofocus", true);
-        core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", ctx_r2.form.hasError("customExpr") && (ctx_r2.form.get("customExpr").dirty || ctx_r2.form.get("customExpr").touched));
-    } }
-    var _c0 = function () { return { adaptivePosition: true }; };
-    function ScheduleTimePickerComponent_div_4_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 20);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelement(5, "input", 21);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r3 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.startDate", null, null, ctx_r3.defaultRes), " ");
-        core.ɵɵadvance(3);
-        core.ɵɵproperty("bsConfig", core.ɵɵpureFunction0(7, _c0));
-    } }
-    function ScheduleTimePickerComponent_div_5_option_8_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "option", 17);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var opt_r22 = ctx.$implicit;
-        var ctx_r21 = core.ɵɵnextContext(2);
-        core.ɵɵpropertyInterpolate("value", opt_r22.value);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 2, opt_r22.text, null, null, ctx_r21.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_5_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 22);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "select", 23);
-        core.ɵɵelementStart(6, "option", 15);
-        core.ɵɵtext(7, "...");
-        core.ɵɵelementEnd();
-        core.ɵɵtemplate(8, ScheduleTimePickerComponent_div_5_option_8_Template, 3, 7, "option", 16);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r4 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.monthOfYear", null, null, ctx_r4.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵproperty("ngForOf", ctx_r4.monthsOfYearOptions);
-    } }
-    function ScheduleTimePickerComponent_div_6_option_8_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "option", 17);
-        core.ɵɵtext(1);
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var opt_r24 = ctx.$implicit;
-        core.ɵɵpropertyInterpolate("value", opt_r24.value);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", opt_r24.text, " ");
-    } }
-    function ScheduleTimePickerComponent_div_6_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 24);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "select", 25);
-        core.ɵɵelementStart(6, "option", 15);
-        core.ɵɵtext(7, "...");
-        core.ɵɵelementEnd();
-        core.ɵɵtemplate(8, ScheduleTimePickerComponent_div_6_option_8_Template, 2, 2, "option", 16);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r5 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.dayOfMonth", null, null, ctx_r5.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵproperty("ngForOf", ctx_r5.daysOfMonthOptions);
-    } }
-    function ScheduleTimePickerComponent_div_7_option_8_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "option", 17);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var opt_r26 = ctx.$implicit;
-        var ctx_r25 = core.ɵɵnextContext(2);
-        core.ɵɵpropertyInterpolate("value", opt_r26.value);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 2, opt_r26.text, null, null, ctx_r25.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_7_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 26);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "select", 27);
-        core.ɵɵelementStart(6, "option", 15);
-        core.ɵɵtext(7, "...");
-        core.ɵɵelementEnd();
-        core.ɵɵtemplate(8, ScheduleTimePickerComponent_div_7_option_8_Template, 3, 7, "option", 16);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r6 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.dayOfWeek", null, null, ctx_r6.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵproperty("ngForOf", ctx_r6.daysOfWeekOptions);
-    } }
-    function ScheduleTimePickerComponent_div_8_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 28);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelement(5, "timepicker", 29);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r7 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 1, "polpCronJob.time", null, null, ctx_r7.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_9_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 30);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "div", 31);
-        core.ɵɵelement(6, "input", 32);
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(7, "div");
-        core.ɵɵtext(8);
-        core.ɵɵpipe(9, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r8 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.excludeHolidays", null, null, ctx_r8.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(9, 7, "polpCronJob.holidayLabel", null, null, ctx_r8.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_10_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 33);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "div", 31);
-        core.ɵɵelement(6, "input", 34);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r9 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 1, "polpCronJob.excludeWeekends", null, null, ctx_r9.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_11_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 35);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelementStart(5, "div", 31);
-        core.ɵɵelement(6, "input", 36);
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(7, "div");
-        core.ɵɵtext(8);
-        core.ɵɵpipe(9, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r10 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.excludeOthers", null, null, ctx_r10.defaultRes), " ");
-        core.ɵɵadvance(6);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(9, 7, "polpCronJob.otherLabel", null, null, ctx_r10.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_12_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 4);
-        core.ɵɵelementStart(1, "label", 37);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementStart(4, "div", 6);
-        core.ɵɵelement(5, "input", 38);
-        core.ɵɵelementEnd();
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r11 = core.ɵɵnextContext();
-        core.ɵɵadvance(2);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 2, "polpCronJob.endDate", null, null, ctx_r11.defaultRes), " ");
-        core.ɵɵadvance(3);
-        core.ɵɵproperty("bsConfig", core.ɵɵpureFunction0(7, _c0));
-    } }
-    function ScheduleTimePickerComponent_ng_container_13_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementContainerStart(0);
-        core.ɵɵelementStart(1, "alert", 39);
-        core.ɵɵtext(2);
-        core.ɵɵpipe(3, "hyperTrans");
-        core.ɵɵelementEnd();
-        core.ɵɵelementContainerEnd();
-    } if (rf & 2) {
-        var a_r27 = ctx.$implicit;
-        var ctx_r12 = core.ɵɵnextContext();
-        core.ɵɵadvance(1);
-        core.ɵɵproperty("type", a_r27.type)("dismissOnTimeout", a_r27.timeout);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(3, 3, a_r27.message, null, null, ctx_r12.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_14_button_1_Template(rf, ctx) { if (rf & 1) {
-        var _r31 = core.ɵɵgetCurrentView();
-        core.ɵɵelementStart(0, "button", 43);
-        core.ɵɵlistener("click", function ScheduleTimePickerComponent_div_14_button_1_Template_button_click_0_listener() { core.ɵɵrestoreView(_r31); var ctx_r30 = core.ɵɵnextContext(2); return ctx_r30.cancel(); });
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r28 = core.ɵɵnextContext(2);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 1, "polpCronJob.cancelBtn", null, null, ctx_r28.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_14_button_2_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "button", 44);
-        core.ɵɵtext(1);
-        core.ɵɵpipe(2, "hyperTrans");
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r29 = core.ɵɵnextContext(2);
-        core.ɵɵadvance(1);
-        core.ɵɵtextInterpolate1(" ", core.ɵɵpipeBind4(2, 1, "polpCronJob.submitBtn", null, null, ctx_r29.defaultRes), " ");
-    } }
-    function ScheduleTimePickerComponent_div_14_Template(rf, ctx) { if (rf & 1) {
-        core.ɵɵelementStart(0, "div", 40);
-        core.ɵɵtemplate(1, ScheduleTimePickerComponent_div_14_button_1_Template, 3, 6, "button", 41);
-        core.ɵɵtemplate(2, ScheduleTimePickerComponent_div_14_button_2_Template, 3, 6, "button", 42);
-        core.ɵɵelementEnd();
-    } if (rf & 2) {
-        var ctx_r13 = core.ɵɵnextContext();
-        core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", !ctx_r13.hideCancelBtn);
-        core.ɵɵadvance(1);
-        core.ɵɵproperty("ngIf", !ctx_r13.hideSubmitBtn);
-    } }
     var defaultSettings = {
         hideSubmitBtn: false,
         hideCancelBtn: true
@@ -700,6 +324,7 @@
             }
         }
     };
+    var ɵ0 = formValidator;
     function mapToFormFields(data) {
         var defaultData = getDefaultScheduleTime();
         data = Object.assign({}, defaultData, data || {});
@@ -884,70 +509,124 @@
         ScheduleTimePickerComponent.prototype.cancel = function () {
             this.onCancel.emit();
         };
-        ScheduleTimePickerComponent.ɵfac = function ScheduleTimePickerComponent_Factory(t) { return new (t || ScheduleTimePickerComponent)(core.ɵɵdirectiveInject(forms.FormBuilder)); };
-        ScheduleTimePickerComponent.ɵcmp = core.ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue" }, features: [core.ɵɵInheritDefinitionFeature, core.ɵɵNgOnChangesFeature], decls: 15, vars: 15, consts: [[3, "formGroup", "ngSubmit"], ["class", "form-group row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "form-group", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "text-warning d-block my-1 small", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "text-warning", "d-block", "my-1", "small"], ["for", "schedule-recurrence", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-recurrence", "formControlName", "recurrence", 1, "form-control"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["for", "schedule-custom-expr", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-custom-expr", "formControlName", "customExpr", 1, "form-control", 3, "autofocus"], ["for", "schedule-start-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-start-date", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "bsConfig"], ["for", "schedule-month-of-year", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-month-of-year", "formControlName", "monthOfYear", 1, "form-control"], ["for", "schedule-day-of-month", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-month", "formControlName", "dayOfMonth", 1, "form-control"], ["for", "schedule-day-of-week", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-day-of-week", "formControlName", "dayOfWeek", 1, "form-control"], ["for", "schedule-time", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-time", "formControlName", "time"], ["for", "schedule-exclude-holidays", 1, "col-12", "col-md-4", "col-form-label"], [1, "form-check"], ["type", "checkbox", "id", "schedule-exclude-holidays", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-weekends", 1, "col-12", "col-md-4", "col-form-label"], ["type", "checkbox", "id", "schedule-exclude-weekends", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static"], ["for", "schedule-exclude-others", 1, "col-12", "col-md-4", "col-form-label"], ["id", "schedule-exclude-others", "type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static"], ["for", "schedule-end-date", 1, "col-12", "col-md-4", "col-form-label"], ["type", "text", "id", "schedule-end-date", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
-                core.ɵɵelementStart(0, "form", 0);
-                core.ɵɵlistener("ngSubmit", function ScheduleTimePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
-                core.ɵɵtemplate(1, ScheduleTimePickerComponent_div_1_Template, 7, 8, "div", 1);
-                core.ɵɵtemplate(2, ScheduleTimePickerComponent_div_2_Template, 9, 7, "div", 1);
-                core.ɵɵtemplate(3, ScheduleTimePickerComponent_div_3_Template, 7, 8, "div", 1);
-                core.ɵɵtemplate(4, ScheduleTimePickerComponent_div_4_Template, 6, 8, "div", 1);
-                core.ɵɵtemplate(5, ScheduleTimePickerComponent_div_5_Template, 9, 7, "div", 1);
-                core.ɵɵtemplate(6, ScheduleTimePickerComponent_div_6_Template, 9, 7, "div", 1);
-                core.ɵɵtemplate(7, ScheduleTimePickerComponent_div_7_Template, 9, 7, "div", 1);
-                core.ɵɵtemplate(8, ScheduleTimePickerComponent_div_8_Template, 6, 6, "div", 1);
-                core.ɵɵtemplate(9, ScheduleTimePickerComponent_div_9_Template, 10, 12, "div", 1);
-                core.ɵɵtemplate(10, ScheduleTimePickerComponent_div_10_Template, 7, 6, "div", 1);
-                core.ɵɵtemplate(11, ScheduleTimePickerComponent_div_11_Template, 10, 12, "div", 1);
-                core.ɵɵtemplate(12, ScheduleTimePickerComponent_div_12_Template, 6, 8, "div", 1);
-                core.ɵɵtemplate(13, ScheduleTimePickerComponent_ng_container_13_Template, 4, 8, "ng-container", 2);
-                core.ɵɵtemplate(14, ScheduleTimePickerComponent_div_14_Template, 3, 2, "div", 3);
-                core.ɵɵelementEnd();
-            } if (rf & 2) {
-                core.ɵɵproperty("formGroup", ctx.form);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.scheduleType);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.recurrence);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.recurrence && ctx.visibiltyCfg.customExpr);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.startDate);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.monthOfYear);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.dayOfMonth);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.dayOfWeek);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.time);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.excludeHolidays);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.excludeWeekends);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.excludeOthers);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", ctx.visibiltyCfg.endDate);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngForOf", ctx.alerts);
-                core.ɵɵadvance(1);
-                core.ɵɵproperty("ngIf", !ctx.hideSubmitBtn || !ctx.hideCancelBtn);
-            } }, directives: [forms.ɵangular_packages_forms_forms_y, forms.NgControlStatusGroup, forms.FormGroupDirective, common.NgIf, common.NgForOf, forms.DefaultValueAccessor, forms.RadioControlValueAccessor, forms.NgControlStatus, forms.FormControlName, forms.SelectControlValueAccessor, forms.NgSelectOption, forms.ɵangular_packages_forms_forms_x, ngxAutofocusDirective.AutofocusDirective, datepicker.BsDatepickerInputDirective, datepicker.BsDatepickerDirective, timepicker.TimepickerComponent, forms.CheckboxControlValueAccessor, alert.AlertComponent], pipes: [ngxI18n.HyperTranslatePipe], styles: [""] });
+        ScheduleTimePickerComponent.ctorParameters = function () { return [
+            { type: forms.FormBuilder }
+        ]; };
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object)
+        ], ScheduleTimePickerComponent.prototype, "initSettings", void 0);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object)
+        ], ScheduleTimePickerComponent.prototype, "initValue", void 0);
+        ScheduleTimePickerComponent = __decorate([
+            core.Component({
+                selector: 'polp-bs-schedule-time-picker',
+                template: "<form [formGroup]=\"form\" (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.scheduleType\">\n        <label class=\"col-12 col-md-4 col-form-label\">\n            {{'polpCronJob.scheduleType' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check form-check-inline\"\n                 *ngFor=\"let opt of scheduleTypeOptions;let i=index\">\n                <input class=\"form-check-input\"\n                       formControlName=\"scheduleType\"\n                       type=\"radio\"\n                       id=\"{{'schedule-type-opt-' + i}}\"\n                       value=\"{{opt.value}}\">\n                <label class=\"form-check-label\"\n                       for=\"{{'schedule-type-opt-' + i}}\">\n                    {{opt.text | hyperTrans:null:null:defaultRes}}\n                </label>\n            </div>\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('scheduleType') && (form.get('scheduleType').dirty || form.get('scheduleType').touched)\">\n                {{'polpCronJob.errors.scheduleTypeRequired' | hyperTrans:null:null:defaultRes}}\n            </span>\n        </div>\n    </div>\n    \n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-recurrence\">\n            {{'polpCronJob.recurrence' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"schedule-recurrence\"\n                    formControlName=\"recurrence\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of recurrenceOptions\">\n                    {{opt.text | hyperTrans:null:null:defaultRes}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence && visibiltyCfg.customExpr\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-custom-expr\">\n            {{'polpCronJob.customExpr' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   [autofocus]=\"true\"\n                   id=\"schedule-custom-expr\"\n                   formControlName=\"customExpr\">\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('customExpr') && (form.get('customExpr').dirty || form.get('customExpr').touched)\">\n                {{'polpCronJob.errors.customExprInvalid' | hyperTrans:null:null:defaultRes}}\n            </span>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.startDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-start-date\">\n            {{'polpCronJob.startDate' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"schedule-start-date\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"startDate\">\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.monthOfYear\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-month-of-year\">\n            {{'polpCronJob.monthOfYear' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"schedule-month-of-year\"\n                    formControlName=\"monthOfYear\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of monthsOfYearOptions\">\n                    {{opt.text | hyperTrans:null:null:defaultRes}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfMonth\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-day-of-month\">\n            {{'polpCronJob.dayOfMonth' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"schedule-day-of-month\"\n                    formControlName=\"dayOfMonth\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfMonthOptions\">\n                    {{opt.text}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfWeek\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-day-of-week\">\n            {{'polpCronJob.dayOfWeek' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"schedule-day-of-week\"\n                    formControlName=\"dayOfWeek\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfWeekOptions\">\n                    {{opt.text | hyperTrans:null:null:defaultRes}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.time\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-time\">\n            {{'polpCronJob.time' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <timepicker id=\"schedule-time\"\n                        formControlName=\"time\">\n            </timepicker>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeHolidays\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-exclude-holidays\">\n            {{'polpCronJob.excludeHolidays' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"schedule-exclude-holidays\"\n                       formControlName=\"excludeHolidays\">\n            </div>\n            <div>\n                {{'polpCronJob.holidayLabel' | hyperTrans:null:null:defaultRes}}\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeWeekends\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-exclude-weekends\">\n            {{'polpCronJob.excludeWeekends' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"schedule-exclude-weekends\"\n                       formControlName=\"excludeWeekends\">\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeOthers\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-exclude-others\">\n            {{'polpCronJob.excludeOthers' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       id=\"schedule-exclude-others\"\n                       type=\"checkbox\"\n                       formControlName=\"excludeOthers\">\n            </div>\n            <div>\n                {{'polpCronJob.otherLabel' | hyperTrans:null:null:defaultRes}}\n            </div>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.endDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"schedule-end-date\">\n            {{'polpCronJob.endDate' | hyperTrans:null:null:defaultRes}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"schedule-end-date\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"endDate\">\n        </div>\n    </div>\n\n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | hyperTrans:null:null:defaultRes}}\n        </alert>\n    </ng-container>\n    \n    <div class=\"d-flex justify-content-end mb-4\" *ngIf=\"!hideSubmitBtn || !hideCancelBtn\">\n        <button type=\"button\" class=\"btn btn-warning\"\n                (click)=\"cancel()\" *ngIf=\"!hideCancelBtn\">\n            {{'polpCronJob.cancelBtn' | hyperTrans:null:null:defaultRes}}\n        </button>\n        <button type=\"submit\" class=\"btn btn-success\"\n                *ngIf=\"!hideSubmitBtn\">\n            {{'polpCronJob.submitBtn' | hyperTrans:null:null:defaultRes}}\n        </button>\n    </div>\n</form>\n",
+                styles: [""]
+            }),
+            __metadata("design:paramtypes", [forms.FormBuilder])
+        ], ScheduleTimePickerComponent);
         return ScheduleTimePickerComponent;
     }(ngxFormCommon.DefaultFormBaseComponent));
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(ScheduleTimePickerComponent, [{
-            type: core.Component,
-            args: [{
-                    selector: 'polp-bs-schedule-time-picker',
-                    templateUrl: './schedule-time-picker.component.html',
-                    styleUrls: ['./schedule-time-picker.component.css']
-                }]
-        }], function () { return [{ type: forms.FormBuilder }]; }, { initSettings: [{
-                type: core.Input
-            }], initValue: [{
-                type: core.Input
-            }] }); })();
+
+    var ScheduleTimeModalComponent = /** @class */ (function (_super) {
+        __extends(ScheduleTimeModalComponent, _super);
+        function ScheduleTimeModalComponent(bsModalRef, bsModalService) {
+            var _this = _super.call(this) || this;
+            _this.bsModalRef = bsModalRef;
+            _this.bsModalService = bsModalService;
+            _this.faSpinner = freeSolidSvgIcons.faSpinner;
+            _this.title = '';
+            _this.alertProvider = new ngxAlert.AlertDefaultImpl();
+            return _this;
+        }
+        Object.defineProperty(ScheduleTimeModalComponent.prototype, "alerts", {
+            get: function () {
+                return this.alertProvider.data;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ScheduleTimeModalComponent.prototype.ngOnInit = function () {
+        };
+        ScheduleTimeModalComponent.prototype.close = function () {
+            this.closeModal(this.outputValue);
+        };
+        ScheduleTimeModalComponent.prototype.updateScheduler = function (evt) {
+            this.outputValue = evt;
+        };
+        ScheduleTimeModalComponent.prototype.validateScheduler = function (evt) {
+            if (evt) {
+                this.isValid = evt.valid;
+            }
+        };
+        ScheduleTimeModalComponent.prototype.confirmAsync = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var ex_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            this.alertProvider.clean();
+                            if (!this.isValid) {
+                                this.alertProvider.warning('Data is not valid!');
+                                return [2 /*return*/];
+                            }
+                            this.isSaving = true;
+                            this.alertProvider.warning('Working ....');
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, 4, 5]);
+                            return [4 /*yield*/, this.onConfirmAsync(this.outputValue)];
+                        case 2:
+                            _a.sent();
+                            this.closeModal(this.outputValue);
+                            return [3 /*break*/, 5];
+                        case 3:
+                            ex_1 = _a.sent();
+                            this.alertProvider.clean();
+                            this.alertProvider.danger('Something went wrong. Please try later!');
+                            return [3 /*break*/, 5];
+                        case 4:
+                            this.isSaving = false;
+                            return [7 /*endfinally*/];
+                        case 5: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        ScheduleTimeModalComponent.ctorParameters = function () { return [
+            { type: modal.BsModalRef },
+            { type: modal.BsModalService }
+        ]; };
+        __decorate([
+            core.Input(),
+            __metadata("design:type", String)
+        ], ScheduleTimeModalComponent.prototype, "title", void 0);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object)
+        ], ScheduleTimeModalComponent.prototype, "initSettings", void 0);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Object)
+        ], ScheduleTimeModalComponent.prototype, "initValue", void 0);
+        __decorate([
+            core.Input(),
+            __metadata("design:type", Function)
+        ], ScheduleTimeModalComponent.prototype, "onConfirmAsync", void 0);
+        ScheduleTimeModalComponent = __decorate([
+            core.Component({
+                selector: 'polp-bs-schedule-time-modal',
+                template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-schedule-time-picker [initSettings]=\"initSettings\"\n                                  [initValue]=\"initValue\"\n                                  (onValidation)=\"validateScheduler($event)\"\n                                  (onValueChanged)=\"updateScheduler($event)\">\n    </polp-bs-schedule-time-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            Close\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirmAsync()\">\n            Confirm\n            <fa-icon [icon]=\"faSpinner\" [spin]=\"true\" class=\"ml-1\" *ngIf=\"isSaving\"></fa-icon>\n        </button>\n    </div>\n</div>\n",
+                styles: [""]
+            }),
+            __metadata("design:paramtypes", [modal.BsModalRef,
+                modal.BsModalService])
+        ], ScheduleTimeModalComponent);
+        return ScheduleTimeModalComponent;
+    }(bsComponents.ObservableModalAbstractComponent));
 
     var CronJobService = /** @class */ (function () {
         function CronJobService() {
@@ -1005,22 +684,53 @@
             }
             return '';
         };
-        CronJobService.ɵfac = function CronJobService_Factory(t) { return new (t || CronJobService)(); };
-        CronJobService.ɵprov = core.ɵɵdefineInjectable({ token: CronJobService, factory: CronJobService.ɵfac, providedIn: 'root' });
+        CronJobService.ɵprov = core.ɵɵdefineInjectable({ factory: function CronJobService_Factory() { return new CronJobService(); }, token: CronJobService, providedIn: "root" });
+        CronJobService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            }),
+            __metadata("design:paramtypes", [])
+        ], CronJobService);
         return CronJobService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(CronJobService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return []; }, null); })();
+
+    var UtilsService = /** @class */ (function () {
+        function UtilsService(_modalService) {
+            this._modalService = _modalService;
+        }
+        UtilsService.prototype.showScheduleTimeEditorAsync = function (input) {
+            var modalRef = this._modalService.show(ScheduleTimeModalComponent, {
+                animated: true,
+                ignoreBackdropClick: true,
+                initialState: Object.assign({}, input),
+                keyboard: false,
+                class: 'modal-dialog-centered'
+            });
+            return modalRef.content.result.toPromise();
+        };
+        UtilsService.ctorParameters = function () { return [
+            { type: modal.BsModalService }
+        ]; };
+        UtilsService.ɵprov = core.ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(core.ɵɵinject(modal.BsModalService)); }, token: UtilsService, providedIn: "root" });
+        UtilsService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            }),
+            __metadata("design:paramtypes", [modal.BsModalService])
+        ], UtilsService);
+        return UtilsService;
+    }());
 
     var PolpBsCronJobModule = /** @class */ (function () {
         function PolpBsCronJobModule() {
         }
-        PolpBsCronJobModule.ɵmod = core.ɵɵdefineNgModule({ type: PolpBsCronJobModule });
-        PolpBsCronJobModule.ɵinj = core.ɵɵdefineInjector({ factory: function PolpBsCronJobModule_Factory(t) { return new (t || PolpBsCronJobModule)(); }, imports: [[
+        PolpBsCronJobModule = __decorate([
+            core.NgModule({
+                declarations: [
+                    ScheduleTimePickerComponent,
+                    ScheduleTimeModalComponent
+                ],
+                imports: [
                     common.CommonModule,
                     forms.FormsModule,
                     forms.ReactiveFormsModule,
@@ -1039,67 +749,26 @@
                     progressbar.ProgressbarModule,
                     timepicker.TimepickerModule,
                     ngxAutofocusDirective.FtAutofocusModule,
-                    ngxI18n.NgxI18nModule
-                ]] });
+                    ngxI18n.NgxI18nModule,
+                    modalDirectives.PolpDraggableModule
+                ],
+                exports: [
+                    ScheduleTimePickerComponent,
+                    ScheduleTimeModalComponent
+                ]
+            })
+        ], PolpBsCronJobModule);
         return PolpBsCronJobModule;
     }());
-    (function () { (typeof ngJitMode === "undefined" || ngJitMode) && core.ɵɵsetNgModuleScope(PolpBsCronJobModule, { declarations: [ScheduleTimePickerComponent], imports: [common.CommonModule,
-            forms.FormsModule,
-            forms.ReactiveFormsModule,
-            dropdown.BsDropdownModule,
-            tabs.TabsModule,
-            pagination.PaginationModule,
-            modal.ModalModule,
-            accordion.AccordionModule,
-            popover.PopoverModule,
-            tooltip.TooltipModule,
-            carousel.CarouselModule,
-            alert.AlertModule,
-            datepicker.BsDatepickerModule,
-            buttons.ButtonsModule,
-            collapse.CollapseModule,
-            progressbar.ProgressbarModule,
-            timepicker.TimepickerModule,
-            ngxAutofocusDirective.FtAutofocusModule,
-            ngxI18n.NgxI18nModule], exports: [ScheduleTimePickerComponent] }); })();
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(PolpBsCronJobModule, [{
-            type: core.NgModule,
-            args: [{
-                    declarations: [
-                        ScheduleTimePickerComponent
-                    ],
-                    imports: [
-                        common.CommonModule,
-                        forms.FormsModule,
-                        forms.ReactiveFormsModule,
-                        dropdown.BsDropdownModule,
-                        tabs.TabsModule,
-                        pagination.PaginationModule,
-                        modal.ModalModule,
-                        accordion.AccordionModule,
-                        popover.PopoverModule,
-                        tooltip.TooltipModule,
-                        carousel.CarouselModule,
-                        alert.AlertModule,
-                        datepicker.BsDatepickerModule,
-                        buttons.ButtonsModule,
-                        collapse.CollapseModule,
-                        progressbar.ProgressbarModule,
-                        timepicker.TimepickerModule,
-                        ngxAutofocusDirective.FtAutofocusModule,
-                        ngxI18n.NgxI18nModule
-                    ],
-                    exports: [
-                        ScheduleTimePickerComponent
-                    ]
-                }]
-        }], null, null); })();
 
     exports.CronJobService = CronJobService;
     exports.PolpBsCronJobModule = PolpBsCronJobModule;
+    exports.ScheduleTimeModalComponent = ScheduleTimeModalComponent;
     exports.ScheduleTimePickerComponent = ScheduleTimePickerComponent;
+    exports.UtilsService = UtilsService;
     exports.defaultDict = defaultDict;
     exports.getDefaultScheduleTime = getDefaultScheduleTime;
+    exports.ɵ0 = ɵ0;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

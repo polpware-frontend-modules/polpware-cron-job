@@ -1,6 +1,6 @@
 {
   "name": "@polpware/cron-job",
-  "version": "9.1.2",
+  "version": "9.2.0",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
@@ -9,6 +9,7 @@
     "@polpware/ngx-alert": "^9.0.0",
     "@polpware/ngx-i18n": "^9.0.0",
     "@polpware/ngx-form-common": "^9.0.0",
+    "@polpware/modal-directives": "^9.0.0",
     "@40three/ngx-autofocus-directive": "^9.0.0",
     "cron-parser": "^4.2.1"
   },
@@ -23,8 +24,6 @@
   "fesm5": "fesm5/polpware-cron-job.js",
   "fesm2015": "fesm2015/polpware-cron-job.js",
   "typings": "polpware-cron-job.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
-  }
+  "metadata": "polpware-cron-job.metadata.json",
+  "sideEffects": false
 }

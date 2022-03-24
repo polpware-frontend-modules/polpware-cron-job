@@ -4,7 +4,6 @@ import { IntervalEnum } from '@polpware/fe-utilities';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent, IDefaultFormInputs } from '@polpware/ngx-form-common';
 import { IScheduleTime, ScheduleTypeEnum } from '../interfaces';
-import * as i0 from "@angular/core";
 export interface ISettings extends IDefaultFormInputs {
     hideSubmitBtn?: boolean;
     hideCancelBtn?: boolean;
@@ -122,6 +121,4 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     protected getRecurrentValue(a: IFormFields): IScheduleTime;
     confirm(): void;
     cancel(): void;
-    static ɵfac: i0.ɵɵFactoryDef<ScheduleTimePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; }, {}, never, never>;
 }
