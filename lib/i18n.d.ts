@@ -13,9 +13,12 @@ export declare const defaultDict: {
         excludeWeekends: string;
         excludeOthers: string;
         otherLabel: string;
+        selectOne: string;
         endDate: string;
+        closeBtn: string;
         cancelBtn: string;
         submitBtn: string;
+        confirmBtn: string;
         oneTimeSchedule: string;
         recurrentSchedule: string;
         everyDay: string;
@@ -42,10 +45,14 @@ export declare const defaultDict: {
         Thursday: string;
         Friday: string;
         Saturday: string;
+        messages: {
+            working: string;
+        };
         errors: {
             general: string;
             customExprInvalid: string;
             scheduleTypeRequired: string;
+            somethingWrong: string;
         };
     };
 };

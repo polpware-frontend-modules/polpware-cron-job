@@ -4,13 +4,13 @@ import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IScheduleTime } from '../interfaces';
 import { ISettings } from '../schedule-time-picker/schedule-time-picker.component';
-export interface IModalInput {
+export interface IScheduleTimeModalInput {
     title: string;
     initSettings: ISettings;
     initValue: IScheduleTime;
     onConfirmAsync: (data: IScheduleTime) => Promise<any>;
 }
-export declare class ScheduleTimeModalComponent extends ObservableModalAbstractComponent<IModalInput, IScheduleTime> implements OnInit, IHasAlertFeature {
+export declare class ScheduleTimeModalComponent extends ObservableModalAbstractComponent<IScheduleTimeModalInput, IScheduleTime> implements OnInit, IHasAlertFeature {
     readonly bsModalRef: BsModalRef;
     protected readonly bsModalService: BsModalService;
     faSpinner: import("@fortawesome/fontawesome-common-types").IconDefinition;
