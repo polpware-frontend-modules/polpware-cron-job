@@ -4,6 +4,7 @@ export declare const defaultDict: {
         recurrence: string;
         customExpr: string;
         startDate: string;
+        inputDate: string;
         monthOfYear: string;
         dayOfMonth: string;
         dayOfWeek: string;
@@ -19,6 +20,7 @@ export declare const defaultDict: {
         cancelBtn: string;
         submitBtn: string;
         confirmBtn: string;
+        editBtn: string;
         oneTimeSchedule: string;
         recurrentSchedule: string;
         everyDay: string;
@@ -48,6 +50,9 @@ export declare const defaultDict: {
         messages: {
             working: string;
         };
+        notSetYet: string;
+        holidaysEditorTitle: string;
+        othersEditorTitle: string;
         errors: {
             general: string;
             customExprInvalid: string;

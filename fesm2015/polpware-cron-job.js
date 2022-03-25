@@ -1,13 +1,13 @@
 import { MonthEnum, DayOfWeekEnum, safeParseInt, IntervalEnum, getDaysOfWeek, getMonthsOfYear, getDaysOfMonth } from '@polpware/fe-utilities';
 import { __decorate, __metadata, __awaiter } from 'tslib';
-import { Input, Component, ɵɵdefineInjectable, Injectable, ɵɵinject, ChangeDetectorRef, Pipe, NgModule } from '@angular/core';
+import { Input, Component, ɵɵdefineInjectable, ɵɵinject, Injectable, ChangeDetectorRef, Pipe, NgModule } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertDefaultImpl } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent } from '@polpware/ngx-form-common';
 import { parseString, parseExpression } from 'cron-parser';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ObservableModalAbstractComponent } from '@polpware/bs-components';
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { ObservableModalAbstractComponent } from '@polpware/bs-components';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { NgxTranslatorImplService, HyperTranslatePipeBase, NgxI18nModule } from '@polpware/ngx-i18n';
 import { CommonModule } from '@angular/common';
@@ -34,6 +34,7 @@ const defaultDict = {
         recurrence: 'Recurrence',
         customExpr: 'Custom CRON expression',
         startDate: 'Start date',
+        inputDate: 'Input one date and confirm',
         monthOfYear: 'Month',
         dayOfMonth: 'Day',
         dayOfWeek: 'Day',
@@ -49,6 +50,7 @@ const defaultDict = {
         cancelBtn: 'Cancel',
         submitBtn: 'Submit',
         confirmBtn: 'Confirm',
+        editBtn: 'Edit',
         oneTimeSchedule: 'One time',
         recurrentSchedule: 'Recurrent',
         everyDay: 'Every day',
@@ -78,6 +80,9 @@ const defaultDict = {
         messages: {
             working: 'Working ...'
         },
+        notSetYet: 'Not set yet',
+        holidaysEditorTitle: 'Edit holidays',
+        othersEditorTitle: 'Edit others',
         errors: {
             general: 'Some of your inputs are not valid. Please check them!',
             customExprInvalid: 'Invalid CRON expression',
@@ -111,6 +116,178 @@ function getDefaultScheduleTime() {
         dayOfWeek: DayOfWeekEnum.Monday
     };
 }
+
+let MultiDateModalComponent = class MultiDateModalComponent extends ObservableModalAbstractComponent {
+    constructor(bsModalRef, bsModalService) {
+        super();
+        this.bsModalRef = bsModalRef;
+        this.bsModalService = bsModalService;
+        this.title = '';
+        this.initValue = [];
+        this.isValid = false;
+        this.alertProvider = new AlertDefaultImpl();
+    }
+    get alerts() {
+        return this.alertProvider.data;
+    }
+    ngOnInit() {
+    }
+    close() {
+        this.closeModal(null);
+    }
+    updateValue(evt) {
+        if (evt) {
+            this.outputValue = evt.map(a => a.value);
+        }
+    }
+    validate(evt) {
+        if (evt) {
+            this.isValid = evt.valid;
+        }
+    }
+    confirm() {
+        if (this.isValid) {
+            this.closeModal(this.outputValue);
+        }
+    }
+};
+MultiDateModalComponent.ctorParameters = () => [
+    { type: BsModalRef },
+    { type: BsModalService }
+];
+__decorate([
+    Input(),
+    __metadata("design:type", String)
+], MultiDateModalComponent.prototype, "title", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], MultiDateModalComponent.prototype, "initValue", void 0);
+MultiDateModalComponent = __decorate([
+    Component({
+        selector: 'polp-bs-multi-date-modal',
+        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title | cronJobHyperTrans}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-multi-date-picker [initValue]=\"initValue\"\n                               (onValidation)=\"validate($event)\"\n                               (onValueChanged)=\"updateValue($event)\">\n    </polp-bs-multi-date-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.cancelBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirm()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n        </button>\n    </div>\n</div>\n",
+        styles: [""]
+    }),
+    __metadata("design:paramtypes", [BsModalRef,
+        BsModalService])
+], MultiDateModalComponent);
+
+let ScheduleTimeModalComponent = class ScheduleTimeModalComponent extends ObservableModalAbstractComponent {
+    constructor(bsModalRef, bsModalService) {
+        super();
+        this.bsModalRef = bsModalRef;
+        this.bsModalService = bsModalService;
+        this.faSpinner = faSpinner;
+        this.title = '';
+        this.alertProvider = new AlertDefaultImpl();
+    }
+    get alerts() {
+        return this.alertProvider.data;
+    }
+    ngOnInit() {
+    }
+    close() {
+        this.closeModal(null);
+    }
+    updateScheduler(evt) {
+        this.outputValue = evt;
+    }
+    validateScheduler(evt) {
+        if (evt) {
+            this.isValid = evt.valid;
+        }
+    }
+    confirmAsync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.alertProvider.clean();
+            if (!this.isValid) {
+                this.alertProvider.warning('polpCronJob.general');
+                return;
+            }
+            this.isSaving = true;
+            this.alertProvider.info('polpCronJob.messages.working');
+            try {
+                if (this.onConfirmAsync) {
+                    yield this.onConfirmAsync(this.outputValue);
+                }
+                this.closeModal(this.outputValue);
+            }
+            catch (ex) {
+                this.alertProvider.clean();
+                this.alertProvider.danger('polpCronJob.errors.somethingWrong');
+            }
+            finally {
+                this.isSaving = false;
+            }
+        });
+    }
+};
+ScheduleTimeModalComponent.ctorParameters = () => [
+    { type: BsModalRef },
+    { type: BsModalService }
+];
+__decorate([
+    Input(),
+    __metadata("design:type", String)
+], ScheduleTimeModalComponent.prototype, "title", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Object)
+], ScheduleTimeModalComponent.prototype, "initSettings", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Object)
+], ScheduleTimeModalComponent.prototype, "initValue", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Function)
+], ScheduleTimeModalComponent.prototype, "onConfirmAsync", void 0);
+ScheduleTimeModalComponent = __decorate([
+    Component({
+        selector: 'polp-bs-schedule-time-modal',
+        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title | cronJobHyperTrans}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-schedule-time-picker [initSettings]=\"initSettings\"\n                                  [initValue]=\"initValue\"\n                                  (onValidation)=\"validateScheduler($event)\"\n                                  (onValueChanged)=\"updateScheduler($event)\">\n    </polp-bs-schedule-time-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.closeBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirmAsync()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n            <fa-icon [icon]=\"faSpinner\" [spin]=\"true\" class=\"ml-1\" *ngIf=\"isSaving\"></fa-icon>\n        </button>\n    </div>\n</div>\n",
+        styles: [""]
+    }),
+    __metadata("design:paramtypes", [BsModalRef,
+        BsModalService])
+], ScheduleTimeModalComponent);
+
+let UtilsService = class UtilsService {
+    constructor(_modalService) {
+        this._modalService = _modalService;
+    }
+    showScheduleTimeEditorAsync(input) {
+        const modalRef = this._modalService.show(ScheduleTimeModalComponent, {
+            animated: true,
+            ignoreBackdropClick: true,
+            initialState: Object.assign({}, input),
+            keyboard: false,
+            class: 'modal-dialog-centered'
+        });
+        return modalRef.content.result.toPromise();
+    }
+    showMultiDateEditorAsync(input) {
+        const modalRef = this._modalService.show(MultiDateModalComponent, {
+            animated: true,
+            ignoreBackdropClick: true,
+            initialState: Object.assign({}, input),
+            keyboard: false,
+            class: 'modal-dialog-centered'
+        });
+        return modalRef.content.result.toPromise();
+    }
+};
+UtilsService.ctorParameters = () => [
+    { type: BsModalService }
+];
+UtilsService.ɵprov = ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(ɵɵinject(BsModalService)); }, token: UtilsService, providedIn: "root" });
+UtilsService = __decorate([
+    Injectable({
+        providedIn: 'root'
+    }),
+    __metadata("design:paramtypes", [BsModalService])
+], UtilsService);
 
 const defaultSettings = {
     hideSubmitBtn: false,
@@ -150,10 +327,8 @@ function mapToFormFields(data) {
         scheduleType: (data.isRecurrent ? ScheduleTypeEnum.Recurrent : ScheduleTypeEnum.OneTime).toString(),
         recurrence: data.recurrence,
         excludeHolidays: !!data.holidays,
-        holidays: data.holidays,
         excludeWeekends: data.excludeWeekends,
         excludeOthers: !!data.otherDays,
-        otherDays: data.otherDays,
         customExpr: data.customExpr,
         startDate: data.startDate,
         endDate: data.endDate,
@@ -164,11 +339,14 @@ function mapToFormFields(data) {
     };
 }
 let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
-    constructor(_builder) {
+    constructor(_builder, _utils) {
         super();
         this._builder = _builder;
+        this._utils = _utils;
         this.initSettings = {};
         this.initValue = null;
+        // todo: We use the company-specific settings ....
+        this.defaultHolidays = '';
         this.settings = {};
         this.prefix = 'stp-' + (new Date).getTime() + '-';
         this.scheduleTypeOptions = [{
@@ -211,10 +389,18 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
             dayOfMonth: false,
             dayOfWeek: false
         };
+        this.holidays = '';
+        this.otherDays = '';
         this.alertProvider = new AlertDefaultImpl();
     }
     get alerts() {
         return this.alertProvider.data;
+    }
+    get isHolidaysExcluded() {
+        return this.form.controls['excludeHolidays'].value;
+    }
+    get isOthersExcluded() {
+        return this.form.controls['excludeOthers'].value;
     }
     ngOnInit() {
         this.settings = Object.assign({}, defaultSettings, this.initSettings);
@@ -223,6 +409,10 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
         const fields = mapToFormFields(this.initValue);
         this.form = this._builder.group(fields, { validators: [formValidator] });
         this.updateFieldVisibility(this.form.value);
+        if (this.initValue) {
+            this.holidays = this.initValue.holidays || this.defaultHolidays || '';
+            this.otherDays = this.initValue.otherDays || '';
+        }
         this._subr = this.form.valueChanges.subscribe(a => {
             this.updateFieldVisibility(a);
             this.notifyValidation();
@@ -242,6 +432,8 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
         this.form.setValue(changes, {
             emitEvent: true
         });
+        this.holidays = data.holidays || this.defaultHolidays || '';
+        this.otherDays = data.otherDays || '';
     }
     updateFieldVisibility(a) {
         for (let k in this.visibiltyCfg) {
@@ -297,9 +489,9 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
         return {
             isRecurrent: true,
             recurrence: recurrence,
-            holidays: a.excludeHolidays ? a.holidays : '',
+            holidays: a.excludeHolidays ? this.holidays : '',
             excludeWeekends: a.excludeWeekends,
-            otherDays: a.excludeOthers ? a.otherDays : '',
+            otherDays: a.excludeOthers ? this.otherDays : '',
             startDate: a.startDate,
             endDate: a.endDate,
             time: a.time,
@@ -319,9 +511,34 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
     cancel() {
         this.onCancel.emit();
     }
+    updateHolidaysAsync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const ret = yield this._utils.showMultiDateEditorAsync({
+                title: 'polpCronJob.holidaysEditorTitle',
+                initValue: (this.holidays || '').split(',').filter(a => !!a)
+            });
+            if (ret) {
+                this.holidays = ret.join(',');
+                this.notifyValueChanges(this.computeOutValue(this.form.value));
+            }
+        });
+    }
+    updateOtherDaysAsync() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const ret = yield this._utils.showMultiDateEditorAsync({
+                title: 'polpCronJob.othersEditorTitle',
+                initValue: (this.otherDays || '').split(',').filter(a => !!a)
+            });
+            if (ret) {
+                this.otherDays = ret.join(',');
+                this.notifyValueChanges(this.computeOutValue(this.form.value));
+            }
+        });
+    }
 };
 ScheduleTimePickerComponent.ctorParameters = () => [
-    { type: FormBuilder }
+    { type: FormBuilder },
+    { type: UtilsService }
 ];
 __decorate([
     Input(),
@@ -331,92 +548,19 @@ __decorate([
     Input(),
     __metadata("design:type", Object)
 ], ScheduleTimePickerComponent.prototype, "initValue", void 0);
-ScheduleTimePickerComponent = __decorate([
-    Component({
-        selector: 'polp-bs-schedule-time-picker',
-        template: "<form [formGroup]=\"form\" (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.scheduleType\">\n        <label class=\"col-12 col-md-4 col-form-label\">\n            {{'polpCronJob.scheduleType' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check form-check-inline\"\n                 *ngFor=\"let opt of scheduleTypeOptions;let i=index\">\n                <input class=\"form-check-input\"\n                       formControlName=\"scheduleType\"\n                       type=\"radio\"\n                       id=\"{{prefix + 'schedule-type-opt-' + i}}\"\n                       value=\"{{opt.value}}\">\n                <label class=\"form-check-label\"\n                       for=\"{{prefix + 'schedule-type-opt-' + i}}\">\n                    {{opt.text | cronJobHyperTrans}}\n                </label>\n            </div>\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('scheduleType') && (form.get('scheduleType').dirty || form.get('scheduleType').touched)\">\n                {{'polpCronJob.errors.scheduleTypeRequired' | cronJobHyperTrans}}\n            </span>\n        </div>\n    </div>\n    \n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-recurrence'}}\">\n            {{'polpCronJob.recurrence' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-recurrence'}}\"\n                    formControlName=\"recurrence\">\n                <option selected value=\"\">{{'polpCronJob.selectOne' | cronJobHyperTrans}}</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of recurrenceOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence && visibiltyCfg.customExpr\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-custom-expr'}}\">\n            {{'polpCronJob.customExpr' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   [autofocus]=\"true\"\n                   id=\"{{prefix + 'schedule-custom-expr'}}\"\n                   formControlName=\"customExpr\">\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('customExpr') && (form.get('customExpr').dirty || form.get('customExpr').touched)\">\n                {{'polpCronJob.errors.customExprInvalid' | cronJobHyperTrans}}\n            </span>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.startDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-start-date'}}\">\n            {{'polpCronJob.startDate' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"{{prefix + 'schedule-start-date'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"startDate\">\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.monthOfYear\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-month-of-year'}}\">\n            {{'polpCronJob.monthOfYear' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-month-of-year'}}\"\n                    formControlName=\"monthOfYear\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of monthsOfYearOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfMonth\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-day-of-month'}}\">\n            {{'polpCronJob.dayOfMonth' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-day-of-month'}}\"\n                    formControlName=\"dayOfMonth\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfMonthOptions\">\n                    {{opt.text}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfWeek\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-day-of-week'}}\">\n            {{'polpCronJob.dayOfWeek' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-day-of-week'}}\"\n                    formControlName=\"dayOfWeek\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfWeekOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.time\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-time'}}\">\n            {{'polpCronJob.time' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <timepicker id=\"{{prefix + 'schedule-time'}}\"\n                        formControlName=\"time\">\n            </timepicker>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeHolidays\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-holidays'}}\">\n            {{'polpCronJob.excludeHolidays' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"{{prefix + 'schedule-exclude-holidays'}}\"\n                       formControlName=\"excludeHolidays\">\n            </div>\n            <div>\n                {{'polpCronJob.holidayLabel' | cronJobHyperTrans}}\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeWeekends\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-weekends'}}\">\n            {{'polpCronJob.excludeWeekends' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"{{prefix + 'schedule-exclude-weekends'}}\"\n                       formControlName=\"excludeWeekends\">\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeOthers\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-others'}}\">\n            {{'polpCronJob.excludeOthers' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       id=\"{{prefix + 'schedule-exclude-others'}}\"\n                       type=\"checkbox\"\n                       formControlName=\"excludeOthers\">\n            </div>\n            <div>\n                {{'polpCronJob.otherLabel' | cronJobHyperTrans}}\n            </div>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.endDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-end-date'}}\">\n            {{'polpCronJob.endDate' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"{{prefix + 'schedule-end-date'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"endDate\">\n        </div>\n    </div>\n\n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n    <div class=\"d-flex justify-content-end mb-4\" *ngIf=\"!hideSubmitBtn || !hideCancelBtn\">\n        <button type=\"button\" class=\"btn btn-warning\"\n                (click)=\"cancel()\" *ngIf=\"!hideCancelBtn\">\n            {{'polpCronJob.cancelBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"submit\" class=\"btn btn-success\"\n                *ngIf=\"!hideSubmitBtn\">\n            {{'polpCronJob.submitBtn' | cronJobHyperTrans}}\n        </button>\n    </div>\n</form>\n",
-        styles: [""]
-    }),
-    __metadata("design:paramtypes", [FormBuilder])
-], ScheduleTimePickerComponent);
-
-let ScheduleTimeModalComponent = class ScheduleTimeModalComponent extends ObservableModalAbstractComponent {
-    constructor(bsModalRef, bsModalService) {
-        super();
-        this.bsModalRef = bsModalRef;
-        this.bsModalService = bsModalService;
-        this.faSpinner = faSpinner;
-        this.title = '';
-        this.alertProvider = new AlertDefaultImpl();
-    }
-    get alerts() {
-        return this.alertProvider.data;
-    }
-    ngOnInit() {
-    }
-    close() {
-        this.closeModal(null);
-    }
-    updateScheduler(evt) {
-        this.outputValue = evt;
-    }
-    validateScheduler(evt) {
-        if (evt) {
-            this.isValid = evt.valid;
-        }
-    }
-    confirmAsync() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.alertProvider.clean();
-            if (!this.isValid) {
-                this.alertProvider.warning('polpCronJob.general');
-                return;
-            }
-            this.isSaving = true;
-            this.alertProvider.info('polpCronJob.messages.working');
-            try {
-                yield this.onConfirmAsync(this.outputValue);
-                this.closeModal(this.outputValue);
-            }
-            catch (ex) {
-                this.alertProvider.clean();
-                this.alertProvider.danger('polpCronJob.errors.somethingWrong!');
-            }
-            finally {
-                this.isSaving = false;
-            }
-        });
-    }
-};
-ScheduleTimeModalComponent.ctorParameters = () => [
-    { type: BsModalRef },
-    { type: BsModalService }
-];
 __decorate([
     Input(),
     __metadata("design:type", String)
-], ScheduleTimeModalComponent.prototype, "title", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Object)
-], ScheduleTimeModalComponent.prototype, "initSettings", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Object)
-], ScheduleTimeModalComponent.prototype, "initValue", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Function)
-], ScheduleTimeModalComponent.prototype, "onConfirmAsync", void 0);
-ScheduleTimeModalComponent = __decorate([
+], ScheduleTimePickerComponent.prototype, "defaultHolidays", void 0);
+ScheduleTimePickerComponent = __decorate([
     Component({
-        selector: 'polp-bs-schedule-time-modal',
-        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-schedule-time-picker [initSettings]=\"initSettings\"\n                                  [initValue]=\"initValue\"\n                                  (onValidation)=\"validateScheduler($event)\"\n                                  (onValueChanged)=\"updateScheduler($event)\">\n    </polp-bs-schedule-time-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.closeBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirmAsync()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n            <fa-icon [icon]=\"faSpinner\" [spin]=\"true\" class=\"ml-1\" *ngIf=\"isSaving\"></fa-icon>\n        </button>\n    </div>\n</div>\n",
+        selector: 'polp-bs-schedule-time-picker',
+        template: "<form [formGroup]=\"form\" (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.scheduleType\">\n        <label class=\"col-12 col-md-4 col-form-label\">\n            {{'polpCronJob.scheduleType' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check form-check-inline\"\n                 *ngFor=\"let opt of scheduleTypeOptions;let i=index\">\n                <input class=\"form-check-input\"\n                       formControlName=\"scheduleType\"\n                       type=\"radio\"\n                       id=\"{{prefix + 'schedule-type-opt-' + i}}\"\n                       value=\"{{opt.value}}\">\n                <label class=\"form-check-label\"\n                       for=\"{{prefix + 'schedule-type-opt-' + i}}\">\n                    {{opt.text | cronJobHyperTrans}}\n                </label>\n            </div>\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('scheduleType') && (form.get('scheduleType').dirty || form.get('scheduleType').touched)\">\n                {{'polpCronJob.errors.scheduleTypeRequired' | cronJobHyperTrans}}\n            </span>\n        </div>\n    </div>\n    \n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-recurrence'}}\">\n            {{'polpCronJob.recurrence' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-recurrence'}}\"\n                    formControlName=\"recurrence\">\n                <option selected value=\"\">{{'polpCronJob.selectOne' | cronJobHyperTrans}}</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of recurrenceOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.recurrence && visibiltyCfg.customExpr\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-custom-expr'}}\">\n            {{'polpCronJob.customExpr' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   [autofocus]=\"true\"\n                   id=\"{{prefix + 'schedule-custom-expr'}}\"\n                   formControlName=\"customExpr\">\n            <span class=\"text-warning d-block my-1 small\" *ngIf=\"form.hasError('customExpr') && (form.get('customExpr').dirty || form.get('customExpr').touched)\">\n                {{'polpCronJob.errors.customExprInvalid' | cronJobHyperTrans}}\n            </span>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.startDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-start-date'}}\">\n            {{'polpCronJob.startDate' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"{{prefix + 'schedule-start-date'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"startDate\">\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.monthOfYear\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-month-of-year'}}\">\n            {{'polpCronJob.monthOfYear' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-month-of-year'}}\"\n                    formControlName=\"monthOfYear\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of monthsOfYearOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfMonth\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-day-of-month'}}\">\n            {{'polpCronJob.dayOfMonth' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-day-of-month'}}\"\n                    formControlName=\"dayOfMonth\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfMonthOptions\">\n                    {{opt.text}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.dayOfWeek\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-day-of-week'}}\">\n            {{'polpCronJob.dayOfWeek' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <select class=\"form-control\"\n                    id=\"{{prefix + 'schedule-day-of-week'}}\"\n                    formControlName=\"dayOfWeek\">\n                <option selected value=\"\">...</option>\n                <option value=\"{{opt.value}}\" *ngFor=\"let opt of daysOfWeekOptions\">\n                    {{opt.text | cronJobHyperTrans}}\n                </option>\n            </select>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.time\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-time'}}\">\n            {{'polpCronJob.time' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <timepicker id=\"{{prefix + 'schedule-time'}}\"\n                        formControlName=\"time\">\n            </timepicker>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeHolidays\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-holidays'}}\">\n            {{'polpCronJob.excludeHolidays' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"{{prefix + 'schedule-exclude-holidays'}}\"\n                       formControlName=\"excludeHolidays\">\n            </div>\n            <div *ngIf=\"isHolidaysExcluded\">\n                {{holidays}}\n                <span *ngIf=\"!holidays\">{{'polpCronJob.notSetYet' | cronJobHyperTrans}}</span>\n                <button class=\"btn btn-link text-info\" (click)=\"updateHolidaysAsync()\">\n                    {{'polpCronJob.editBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeWeekends\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-weekends'}}\">\n            {{'polpCronJob.excludeWeekends' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       type=\"checkbox\"\n                       id=\"{{prefix + 'schedule-exclude-weekends'}}\"\n                       formControlName=\"excludeWeekends\">\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.excludeOthers\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-exclude-others'}}\">\n            {{'polpCronJob.excludeOthers' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input position-static\"\n                       id=\"{{prefix + 'schedule-exclude-others'}}\"\n                       type=\"checkbox\"\n                       formControlName=\"excludeOthers\">\n            </div>\n            <div *ngIf=\"isOthersExcluded\">\n                {{otherDays}}\n                <span *ngIf=\"!otherDays\">{{'polpCronJob.notSetYet' | cronJobHyperTrans}}</span>\n                <button class=\"btn btn-link text-info\" (click)=\"updateOtherDaysAsync()\">\n                    {{'polpCronJob.editBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"form-group row\" *ngIf=\"visibiltyCfg.endDate\">\n        <label class=\"col-12 col-md-4 col-form-label\"\n               for=\"{{prefix + 'schedule-end-date'}}\">\n            {{'polpCronJob.endDate' | cronJobHyperTrans}}\n        </label>\n        <div class=\"col-12 col-md-8\">\n            <input class=\"form-control\"\n                   type=\"text\"\n                   id=\"{{prefix + 'schedule-end-date'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   formControlName=\"endDate\">\n        </div>\n    </div>\n\n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n    <div class=\"d-flex justify-content-end mb-4\" *ngIf=\"!hideSubmitBtn || !hideCancelBtn\">\n        <button type=\"button\" class=\"btn btn-warning\"\n                (click)=\"cancel()\" *ngIf=\"!hideCancelBtn\">\n            {{'polpCronJob.cancelBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"submit\" class=\"btn btn-success\"\n                *ngIf=\"!hideSubmitBtn\">\n            {{'polpCronJob.submitBtn' | cronJobHyperTrans}}\n        </button>\n    </div>\n</form>\n",
         styles: [""]
     }),
-    __metadata("design:paramtypes", [BsModalRef,
-        BsModalService])
-], ScheduleTimeModalComponent);
+    __metadata("design:paramtypes", [FormBuilder,
+        UtilsService])
+], ScheduleTimePickerComponent);
 
 function getFormattedDate(date) {
     var month = (1 + date.getMonth()).toString();
@@ -514,64 +658,11 @@ __decorate([
 MultiDatePickerComponent = __decorate([
     Component({
         selector: 'polp-bs-multi-date-picker',
-        template: "<form (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\">\n        <label class=\"col-12 col-form-label\"\n               for=\"{{prefix + 'tag-input'}}\">\n            {{'polpCronJob.startDate' | cronJobHyperTrans}}\n        </label>\n        \n        <div class=\"input-group\">\n            <input type=\"text\"\n                   class=\"form-control\"\n                   id=\"{{prefix + 'tag-input'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   [bsValue]=\"bsValue\">\n            <div class=\"input-group-append\">            \n                <button type=\"submit\" class=\"btn btn-primary\">\n                    {{'polpCronJob.submitBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n</form>\n\n\n\n<form [formGroup]=\"form\">\n    <div class=\"form-group row\">\n        <tag-input\n            [formControlName]=\"'chips'\">\n        </tag-input>\n    </div>\n</form>    \n",
+        template: "<form (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\">\n        <label class=\"col-12 col-form-label\"\n               for=\"{{prefix + 'tag-input'}}\">\n            {{'polpCronJob.inputDate' | cronJobHyperTrans}}\n        </label>\n        \n        <div class=\"input-group\">\n            <input type=\"text\"\n                   class=\"form-control\"\n                   id=\"{{prefix + 'tag-input'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   [bsValue]=\"bsValue\">\n            <div class=\"input-group-append\">            \n                <button type=\"submit\" class=\"btn btn-info\">\n                    {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n</form>\n\n\n\n<form [formGroup]=\"form\">\n    <div class=\"form-group row\">\n        <tag-input\n            [formControlName]=\"'chips'\">\n        </tag-input>\n    </div>\n</form>    \n",
         styles: [""]
     }),
     __metadata("design:paramtypes", [FormBuilder])
 ], MultiDatePickerComponent);
-
-let MultiDateModalComponent = class MultiDateModalComponent extends ObservableModalAbstractComponent {
-    constructor(bsModalRef, bsModalService) {
-        super();
-        this.bsModalRef = bsModalRef;
-        this.bsModalService = bsModalService;
-        this.title = '';
-        this.initValue = [];
-        this.alertProvider = new AlertDefaultImpl();
-    }
-    get alerts() {
-        return this.alertProvider.data;
-    }
-    ngOnInit() {
-    }
-    close() {
-        this.closeModal(null);
-    }
-    updateValue(evt) {
-        if (evt) {
-            this.outputValue = evt.map(a => a.value);
-        }
-    }
-    validate(evt) {
-        if (evt) {
-            this.isValid = evt.valid;
-        }
-    }
-    confirm() {
-        this.closeModal(this.outputValue);
-    }
-};
-MultiDateModalComponent.ctorParameters = () => [
-    { type: BsModalRef },
-    { type: BsModalService }
-];
-__decorate([
-    Input(),
-    __metadata("design:type", String)
-], MultiDateModalComponent.prototype, "title", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], MultiDateModalComponent.prototype, "initValue", void 0);
-MultiDateModalComponent = __decorate([
-    Component({
-        selector: 'polp-bs-multi-date-modal',
-        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-multi-date-picker [initValue]=\"initValue\"\n                               (onValidation)=\"validate($event)\"\n                               (onValueChanged)=\"updateValue($event)\">\n    </polp-bs-multi-date-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.closeBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirm()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n        </button>\n    </div>\n</div>\n",
-        styles: [""]
-    }),
-    __metadata("design:paramtypes", [BsModalRef,
-        BsModalService])
-], MultiDateModalComponent);
 
 let CronJobService = class CronJobService {
     constructor() { }
@@ -636,42 +727,6 @@ CronJobService = __decorate([
     }),
     __metadata("design:paramtypes", [])
 ], CronJobService);
-
-let UtilsService = class UtilsService {
-    constructor(_modalService) {
-        this._modalService = _modalService;
-    }
-    showScheduleTimeEditorAsync(input) {
-        const modalRef = this._modalService.show(ScheduleTimeModalComponent, {
-            animated: true,
-            ignoreBackdropClick: true,
-            initialState: Object.assign({}, input),
-            keyboard: false,
-            class: 'modal-dialog-centered'
-        });
-        return modalRef.content.result.toPromise();
-    }
-    showMultiDateEditorAsync(input) {
-        const modalRef = this._modalService.show(MultiDateModalComponent, {
-            animated: true,
-            ignoreBackdropClick: true,
-            initialState: Object.assign({}, input),
-            keyboard: false,
-            class: 'modal-dialog-centered'
-        });
-        return modalRef.content.result.toPromise();
-    }
-};
-UtilsService.ctorParameters = () => [
-    { type: BsModalService }
-];
-UtilsService.ɵprov = ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(ɵɵinject(BsModalService)); }, token: UtilsService, providedIn: "root" });
-UtilsService = __decorate([
-    Injectable({
-        providedIn: 'root'
-    }),
-    __metadata("design:paramtypes", [BsModalService])
-], UtilsService);
 
 // On purpose do not make it injectable 
 class CronJobTranslatorService extends NgxTranslatorImplService {

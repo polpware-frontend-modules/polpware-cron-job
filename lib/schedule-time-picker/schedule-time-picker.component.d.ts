@@ -4,6 +4,7 @@ import { IntervalEnum } from '@polpware/fe-utilities';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent, IDefaultFormInputs } from '@polpware/ngx-form-common';
 import { IScheduleTime, ScheduleTypeEnum } from '../interfaces';
+import { UtilsService } from '../utils.service';
 export interface ISettings extends IDefaultFormInputs {
     hideSubmitBtn?: boolean;
     hideCancelBtn?: boolean;
@@ -12,10 +13,8 @@ export interface IFormFields {
     scheduleType: number;
     recurrence: number;
     excludeHolidays: boolean;
-    holidays: string;
     excludeWeekends: boolean;
     excludeOthers: boolean;
-    otherDays: string;
     customExpr: string;
     startDate: Date;
     endDate: Date;
@@ -26,8 +25,10 @@ export interface IFormFields {
 }
 export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponent implements OnInit, OnDestroy, OnChanges, IHasAlertFeature {
     private _builder;
+    private readonly _utils;
     initSettings: ISettings;
     initValue: IScheduleTime;
+    defaultHolidays: string;
     settings: ISettings;
     prefix: string;
     form: FormGroup;
@@ -56,11 +57,15 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
         dayOfMonth: boolean;
         dayOfWeek: boolean;
     };
+    holidays: string;
+    otherDays: string;
     isSaving: boolean;
     alertProvider: AlertDefaultImpl;
     private _subr;
-    constructor(_builder: FormBuilder);
+    constructor(_builder: FormBuilder, _utils: UtilsService);
     get alerts(): import("@polpware/ngx-alert").IAlertItem[];
+    get isHolidaysExcluded(): any;
+    get isOthersExcluded(): any;
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(data: SimpleChanges): void;
@@ -71,4 +76,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     protected getRecurrentValue(a: IFormFields): IScheduleTime;
     confirm(): void;
     cancel(): void;
+    updateHolidaysAsync(): Promise<void>;
+    updateOtherDaysAsync(): Promise<void>;
 }
