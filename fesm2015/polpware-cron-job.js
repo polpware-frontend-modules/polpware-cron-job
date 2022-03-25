@@ -519,6 +519,7 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
             });
             if (ret) {
                 this.holidays = ret.join(',');
+                this.notifyValidation();
                 this.notifyValueChanges(this.computeOutValue(this.form.value));
             }
         });
@@ -531,6 +532,7 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
             });
             if (ret) {
                 this.otherDays = ret.join(',');
+                this.notifyValidation();
                 this.notifyValueChanges(this.computeOutValue(this.form.value));
             }
         });
@@ -658,7 +660,7 @@ __decorate([
 MultiDatePickerComponent = __decorate([
     Component({
         selector: 'polp-bs-multi-date-picker',
-        template: "<form (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\">\n        <label class=\"col-12 col-form-label\"\n               for=\"{{prefix + 'tag-input'}}\">\n            {{'polpCronJob.inputDate' | cronJobHyperTrans}}\n        </label>\n        \n        <div class=\"input-group\">\n            <input type=\"text\"\n                   class=\"form-control\"\n                   id=\"{{prefix + 'tag-input'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   [bsValue]=\"bsValue\">\n            <div class=\"input-group-append\">            \n                <button type=\"submit\" class=\"btn btn-info\">\n                    {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n</form>\n\n\n\n<form [formGroup]=\"form\">\n    <div class=\"form-group row\">\n        <tag-input\n            [formControlName]=\"'chips'\">\n        </tag-input>\n    </div>\n</form>    \n",
+        template: "<form (ngSubmit)=\"confirm()\">\n    <div class=\"form-group row\">\n        <label class=\"col-12 col-form-label\"\n               for=\"{{prefix + 'tag-input'}}\">\n            {{'polpCronJob.inputDate' | cronJobHyperTrans}}\n        </label>\n        \n        <div class=\"input-group\">\n            <input type=\"text\"\n                   class=\"form-control\"\n                   id=\"{{prefix + 'tag-input'}}\"\n                   bsDatepicker\n                   [bsConfig]=\"{ adaptivePosition: true }\"\n                   [ngModelOptions]=\"{standalone: true}\"\n                   [(ngModel)]=\"bsValue\">\n            <div class=\"input-group-append\">            \n                <button type=\"submit\" class=\"btn btn-info\">\n                    {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n                </button>\n            </div>\n        </div>\n    </div>\n</form>\n\n\n\n<form [formGroup]=\"form\">\n    <div class=\"form-group row\">\n        <tag-input\n            [formControlName]=\"'chips'\">\n        </tag-input>\n    </div>\n</form>    \n",
         styles: [""]
     }),
     __metadata("design:paramtypes", [FormBuilder])
