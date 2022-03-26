@@ -1,6 +1,6 @@
 import { MonthEnum, DayOfWeekEnum, safeParseInt, IntervalEnum, getDaysOfWeek, getMonthsOfYear, getDaysOfMonth } from '@polpware/fe-utilities';
 import { __decorate, __metadata, __awaiter } from 'tslib';
-import { Input, Component, ɵɵdefineInjectable, ɵɵinject, Injectable, ChangeDetectorRef, Pipe, NgModule } from '@angular/core';
+import { Input, Component, ɵɵdefineInjectable, ɵɵinject, Injectable, EventEmitter, Output, ChangeDetectorRef, Pipe, NgModule } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertDefaultImpl } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent } from '@polpware/ngx-form-common';
@@ -198,6 +198,16 @@ let ScheduleTimeModalComponent = class ScheduleTimeModalComponent extends Observ
             this.isValid = evt.valid;
         }
     }
+    updateStyle(evt) {
+        if (evt && evt.opened) {
+            const newClasses = this.extraClasses ? `${this.extraClasses} has-child-modal` : 'has-child-modal';
+            this.bsModalRef.setClass(newClasses);
+        }
+        else {
+            const newClasses = this.extraClasses || '';
+            this.bsModalRef.setClass(newClasses);
+        }
+    }
     confirmAsync() {
         return __awaiter(this, void 0, void 0, function* () {
             this.alertProvider.clean();
@@ -243,10 +253,14 @@ __decorate([
     Input(),
     __metadata("design:type", Function)
 ], ScheduleTimeModalComponent.prototype, "onConfirmAsync", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", String)
+], ScheduleTimeModalComponent.prototype, "extraClasses", void 0);
 ScheduleTimeModalComponent = __decorate([
     Component({
         selector: 'polp-bs-schedule-time-modal',
-        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title | cronJobHyperTrans}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-schedule-time-picker [initSettings]=\"initSettings\"\n                                  [initValue]=\"initValue\"\n                                  (onValidation)=\"validateScheduler($event)\"\n                                  (onValueChanged)=\"updateScheduler($event)\">\n    </polp-bs-schedule-time-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.closeBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirmAsync()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n            <fa-icon [icon]=\"faSpinner\" [spin]=\"true\" class=\"ml-1\" *ngIf=\"isSaving\"></fa-icon>\n        </button>\n    </div>\n</div>\n",
+        template: "<div class=\"modal-header\" polpModalDraggable>\n    <h4 class=\"modal-title\">{{title | cronJobHyperTrans}}</h4>\n</div>\n<div class=\"modal-body\">\n    <polp-bs-schedule-time-picker [initSettings]=\"initSettings\"\n                                  [initValue]=\"initValue\"\n                                  (childStateChanged)=\"updateStyle($event)\"\n                                  (onValidation)=\"validateScheduler($event)\"\n                                  (onValueChanged)=\"updateScheduler($event)\">\n    </polp-bs-schedule-time-picker>\n    \n    <ng-container *ngFor=\"let a of alerts\">\n        <alert [type]=\"a.type\" [dismissOnTimeout]=\"a.timeout\">\n            {{a.message | cronJobHyperTrans}}\n        </alert>\n    </ng-container>\n    \n</div>\n<div class=\"modal-footer\">\n    <div class=\"d-flex justify-content-end\">\n        <button class=\"btn btn-secondary mr-2\" (click)=\"close()\">\n            {{'polpCronJob.closeBtn' | cronJobHyperTrans}}\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"isValid\"\n                (click)=\"confirmAsync()\">\n            {{'polpCronJob.confirmBtn' | cronJobHyperTrans}}\n            <fa-icon [icon]=\"faSpinner\" [spin]=\"true\" class=\"ml-1\" *ngIf=\"isSaving\"></fa-icon>\n        </button>\n    </div>\n</div>\n",
         styles: [""]
     }),
     __metadata("design:paramtypes", [BsModalRef,
@@ -347,6 +361,7 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
         this.initValue = null;
         // todo: We use the company-specific settings ....
         this.defaultHolidays = '';
+        this.childStateChanged = new EventEmitter();
         this.settings = {};
         this.prefix = 'stp-' + (new Date).getTime() + '-';
         this.scheduleTypeOptions = [{
@@ -513,10 +528,12 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
     }
     updateHolidaysAsync() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.childStateChanged.emit({ opened: true });
             const ret = yield this._utils.showMultiDateEditorAsync({
                 title: 'polpCronJob.holidaysEditorTitle',
                 initValue: (this.holidays || '').split(',').filter(a => !!a)
             });
+            this.childStateChanged.emit({ opened: false });
             if (ret) {
                 this.holidays = ret.join(',');
                 this.notifyValidation();
@@ -526,10 +543,12 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
     }
     updateOtherDaysAsync() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.childStateChanged.emit({ opened: true });
             const ret = yield this._utils.showMultiDateEditorAsync({
                 title: 'polpCronJob.othersEditorTitle',
                 initValue: (this.otherDays || '').split(',').filter(a => !!a)
             });
+            this.childStateChanged.emit({ opened: false });
             if (ret) {
                 this.otherDays = ret.join(',');
                 this.notifyValidation();
@@ -554,6 +573,10 @@ __decorate([
     Input(),
     __metadata("design:type", String)
 ], ScheduleTimePickerComponent.prototype, "defaultHolidays", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", Object)
+], ScheduleTimePickerComponent.prototype, "childStateChanged", void 0);
 ScheduleTimePickerComponent = __decorate([
     Component({
         selector: 'polp-bs-schedule-time-picker',
