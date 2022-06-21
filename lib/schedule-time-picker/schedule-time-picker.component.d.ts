@@ -1,11 +1,11 @@
-import { OnChanges, OnDestroy, OnInit, SimpleChanges, EventEmitter } from '@angular/core';
+import { EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IChildModalState } from '@polpware/bs-components';
 import { IntervalEnum } from '@polpware/fe-utilities';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { DefaultFormBaseComponent, IDefaultFormInputs } from '@polpware/ngx-form-common';
 import { IScheduleTime, ScheduleTypeEnum } from '../interfaces';
 import { UtilsService } from '../utils.service';
-import { IChildModalState } from '@polpware/bs-components';
 export interface ISettings extends IDefaultFormInputs {
     hideSubmitBtn?: boolean;
     hideCancelBtn?: boolean;

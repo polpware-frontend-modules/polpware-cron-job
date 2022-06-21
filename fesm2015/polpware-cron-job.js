@@ -445,7 +445,7 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
     updateFormData(data) {
         const changes = mapToFormFields(data);
         this.form.setValue(changes, {
-            emitEvent: true
+            emitEvent: false
         });
         this.holidays = data.holidays || this.defaultHolidays || '';
         this.otherDays = data.otherDays || '';
