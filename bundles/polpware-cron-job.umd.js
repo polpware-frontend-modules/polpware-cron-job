@@ -306,6 +306,72 @@
             dayOfWeek: feUtilities.DayOfWeekEnum.Monday
         };
     }
+    function isEqualString(left, right) {
+        if (!left && !right) {
+            return true;
+        }
+        return left == right;
+    }
+    function isEqualDate(left, right) {
+        if (!left && !right) {
+            return true;
+        }
+        if (!left || !right) {
+            return false;
+        }
+        return left.getFullYear() == right.getFullYear() &&
+            left.getMonth() == right.getMonth() &&
+            left.getDate() == right.getDate();
+    }
+    function isEqualTime(left, right) {
+        if (!left && !right) {
+            return true;
+        }
+        if (!left || !right) {
+            return false;
+        }
+        return left.getHours() == right.getHours() &&
+            left.getMinutes() == right.getMinutes();
+    }
+    function isEqualBool(left, right) {
+        if (!left && !right) {
+            return true;
+        }
+        return left === right;
+    }
+    function isEqualScheduleTime(left, right) {
+        if (!left && !right) {
+            return true;
+        }
+        if (!left || !right) {
+            return false;
+        }
+        if (left.isRecurrent && right.isRecurrent) {
+            if (!isEqualString(left.customExpr, right.customExpr)) {
+                return false;
+            }
+            if (!isEqualString(left.holidays, right.holidays)) {
+                return false;
+            }
+            if (!isEqualBool(left.excludeWeekends, right.excludeWeekends)) {
+                return false;
+            }
+            if (!isEqualString(left.otherDays, right.otherDays)) {
+                return false;
+            }
+            if (!isEqualDate(left.endDate, right.endDate) || !isEqualTime(left.endDate, right.endDate)) {
+                return false;
+            }
+            return true;
+        }
+        if (!left.isRecurrent && !right.isRecurrent) {
+            if (!isEqualDate(left.startDate, right.startDate) || !isEqualTime(left.time, right.time)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
     var MultiDateModalComponent = /** @class */ (function (_super) {
         __extends(MultiDateModalComponent, _super);
@@ -677,8 +743,12 @@
         };
         ScheduleTimePickerComponent.prototype.updateFormData = function (data) {
             var changes = mapToFormFields(data);
-            this.form.setValue(changes, {
-                emitEvent: false
+            this.form.patchValue(changes, {
+                emitEvent: false // No need to emit event,
+                // Even in this case, the onValueChange will be trigger.
+                // so that we can get the validation change.
+                // the client should compare the received value and the old value to decide if
+                // any data has been changed. 
             });
             this.holidays = data.holidays || this.defaultHolidays || '';
             this.otherDays = data.otherDays || '';
@@ -1102,6 +1172,11 @@
     exports.UtilsService = UtilsService;
     exports.defaultDict = defaultDict;
     exports.getDefaultScheduleTime = getDefaultScheduleTime;
+    exports.isEqualBool = isEqualBool;
+    exports.isEqualDate = isEqualDate;
+    exports.isEqualScheduleTime = isEqualScheduleTime;
+    exports.isEqualString = isEqualString;
+    exports.isEqualTime = isEqualTime;
     exports.ɵ0 = ɵ0;
 
     Object.defineProperty(exports, '__esModule', { value: true });

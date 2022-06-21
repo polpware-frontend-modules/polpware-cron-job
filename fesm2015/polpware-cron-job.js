@@ -116,6 +116,72 @@ function getDefaultScheduleTime() {
         dayOfWeek: DayOfWeekEnum.Monday
     };
 }
+function isEqualString(left, right) {
+    if (!left && !right) {
+        return true;
+    }
+    return left == right;
+}
+function isEqualDate(left, right) {
+    if (!left && !right) {
+        return true;
+    }
+    if (!left || !right) {
+        return false;
+    }
+    return left.getFullYear() == right.getFullYear() &&
+        left.getMonth() == right.getMonth() &&
+        left.getDate() == right.getDate();
+}
+function isEqualTime(left, right) {
+    if (!left && !right) {
+        return true;
+    }
+    if (!left || !right) {
+        return false;
+    }
+    return left.getHours() == right.getHours() &&
+        left.getMinutes() == right.getMinutes();
+}
+function isEqualBool(left, right) {
+    if (!left && !right) {
+        return true;
+    }
+    return left === right;
+}
+function isEqualScheduleTime(left, right) {
+    if (!left && !right) {
+        return true;
+    }
+    if (!left || !right) {
+        return false;
+    }
+    if (left.isRecurrent && right.isRecurrent) {
+        if (!isEqualString(left.customExpr, right.customExpr)) {
+            return false;
+        }
+        if (!isEqualString(left.holidays, right.holidays)) {
+            return false;
+        }
+        if (!isEqualBool(left.excludeWeekends, right.excludeWeekends)) {
+            return false;
+        }
+        if (!isEqualString(left.otherDays, right.otherDays)) {
+            return false;
+        }
+        if (!isEqualDate(left.endDate, right.endDate) || !isEqualTime(left.endDate, right.endDate)) {
+            return false;
+        }
+        return true;
+    }
+    if (!left.isRecurrent && !right.isRecurrent) {
+        if (!isEqualDate(left.startDate, right.startDate) || !isEqualTime(left.time, right.time)) {
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
 
 let MultiDateModalComponent = class MultiDateModalComponent extends ObservableModalAbstractComponent {
     constructor(bsModalRef, bsModalService) {
@@ -444,8 +510,12 @@ let ScheduleTimePickerComponent = class ScheduleTimePickerComponent extends Defa
     }
     updateFormData(data) {
         const changes = mapToFormFields(data);
-        this.form.setValue(changes, {
-            emitEvent: false
+        this.form.patchValue(changes, {
+            emitEvent: false // No need to emit event,
+            // Even in this case, the onValueChange will be trigger.
+            // so that we can get the validation change.
+            // the client should compare the received value and the old value to decide if
+            // any data has been changed. 
         });
         this.holidays = data.holidays || this.defaultHolidays || '';
         this.otherDays = data.otherDays || '';
@@ -832,5 +902,5 @@ PolpBsCronJobModule = __decorate([
  * Generated bundle index. Do not edit.
  */
 
-export { CronJobHyperTransPipe, CronJobService, CronJobTranslatorService, MultiDateModalComponent, MultiDatePickerComponent, PolpBsCronJobModule, ScheduleTimeModalComponent, ScheduleTimePickerComponent, ScheduleTypeEnum, UtilsService, defaultDict, getDefaultScheduleTime, ɵ0 };
+export { CronJobHyperTransPipe, CronJobService, CronJobTranslatorService, MultiDateModalComponent, MultiDatePickerComponent, PolpBsCronJobModule, ScheduleTimeModalComponent, ScheduleTimePickerComponent, ScheduleTypeEnum, UtilsService, defaultDict, getDefaultScheduleTime, isEqualBool, isEqualDate, isEqualScheduleTime, isEqualString, isEqualTime, ɵ0 };
 //# sourceMappingURL=polpware-cron-job.js.map
