@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { ObservableModalAbstractComponent } from '@polpware/bs-components';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import * as i0 from "@angular/core";
 export interface IMultiDateModalInput {
     title: string;
     initValue: string[];
@@ -26,4 +27,6 @@ export declare class MultiDateModalComponent extends ObservableModalAbstractComp
         valid: boolean;
     }): void;
     confirm(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MultiDateModalComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDateModalComponent, "polp-bs-multi-date-modal", never, { "title": "title"; "initValue": "initValue"; }, {}, never, never>;
 }

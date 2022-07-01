@@ -1,30 +1,40 @@
 {
   "name": "@polpware/cron-job",
-  "version": "9.4.2",
+  "version": "13.0.0",
   "peerDependencies": {
-    "@angular/common": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "ngx-bootstrap": "^6.2.0",
-    "@polpware/fe-utilities": "^9.0.0",
-    "@polpware/ngx-alert": "^9.0.0",
-    "@polpware/ngx-i18n": "^9.0.0",
-    "@polpware/ngx-form-common": "^9.0.0",
-    "@polpware/modal-directives": "^9.0.0",
-    "@40three/ngx-autofocus-directive": "^9.0.0",
-    "cron-parser": "^4.2.1",
-    "ngx-chips": "^2.2.0"
+    "@angular/common": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "ngx-bootstrap": "^8.0.0",
+    "@polpware/fe-utilities": "^13.0.0",
+    "@polpware/ngx-alert": "^13.0.0",
+    "@polpware/ngx-i18n": "^13.0.0",
+    "@polpware/ngx-form-common": "^13.0.0",
+    "@polpware/modal-directives": "^13.0.0",
+    "@40three/ngx-autofocus-directive": "^13.0.0",
+    "cron-parser": "^4.5.0",
+    "ngx-chips": "^3.0.0"
   },
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "^2.0.0"
   },
-  "main": "bundles/polpware-cron-job.umd.js",
-  "module": "fesm5/polpware-cron-job.js",
-  "es2015": "fesm2015/polpware-cron-job.js",
-  "esm5": "esm5/polpware-cron-job.js",
-  "esm2015": "esm2015/polpware-cron-job.js",
-  "fesm5": "fesm5/polpware-cron-job.js",
-  "fesm2015": "fesm2015/polpware-cron-job.js",
+  "module": "fesm2015/polpware-cron-job.mjs",
+  "es2020": "fesm2020/polpware-cron-job.mjs",
+  "esm2020": "esm2020/polpware-cron-job.mjs",
+  "fesm2020": "fesm2020/polpware-cron-job.mjs",
+  "fesm2015": "fesm2015/polpware-cron-job.mjs",
   "typings": "polpware-cron-job.d.ts",
-  "metadata": "polpware-cron-job.metadata.json",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./polpware-cron-job.d.ts",
+      "esm2020": "./esm2020/polpware-cron-job.mjs",
+      "es2020": "./fesm2020/polpware-cron-job.mjs",
+      "es2015": "./fesm2015/polpware-cron-job.mjs",
+      "node": "./fesm2015/polpware-cron-job.mjs",
+      "default": "./fesm2020/polpware-cron-job.mjs"
+    }
+  },
   "sideEffects": false
 }

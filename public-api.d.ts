@@ -6,6 +6,7 @@ export * from './lib/multi-date-picker/multi-date-picker.component';
 export * from './lib/multi-date-modal/multi-date-modal.component';
 export * from './lib/cron-job.service';
 export * from './lib/utils.service';
+export * from './lib/low-level-utils.service';
 export * from './lib/cron-job-translator.service';
 export * from './lib/cron-job-hyper-trans.pipe';
 export * from './lib/cron-job.module';
