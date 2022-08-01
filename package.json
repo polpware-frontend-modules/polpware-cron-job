@@ -1,6 +1,6 @@
 {
   "name": "@polpware/cron-job",
-  "version": "13.1.0",
+  "version": "13.1.1",
   "peerDependencies": {
     "@angular/common": "^13.0.0",
     "@angular/core": "^13.0.0",
@@ -12,7 +12,7 @@
     "@polpware/modal-directives": "^13.0.0",
     "@40three/ngx-autofocus-directive": "^13.0.0",
     "cron-parser": "^4.5.0",
-    "ngx-chips": "^2.0.0"
+    "ngx-chips": "^3.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
