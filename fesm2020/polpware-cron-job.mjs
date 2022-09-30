@@ -25,7 +25,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import * as i6 from '@40three/ngx-autofocus-directive';
 import { FtAutofocusModule } from '@40three/ngx-autofocus-directive';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
