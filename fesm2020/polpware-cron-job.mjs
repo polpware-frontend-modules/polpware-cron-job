@@ -525,6 +525,8 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
     }
     updateFormData(data) {
         const changes = mapToFormFields(data);
+        this.holidays = data.holidays || this.defaultHolidays || '';
+        this.otherDays = data.otherDays || '';
         this.form.patchValue(changes, {
             emitEvent: false // No need to emit event,
             // Even in this case, the onValueChange will be trigger.
@@ -532,8 +534,6 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
             // the client should compare the received value and the old value to decide if
             // any data has been changed. 
         });
-        this.holidays = data.holidays || this.defaultHolidays || '';
-        this.otherDays = data.otherDays || '';
     }
     updateFieldVisibility(a) {
         for (let k in this.visibiltyCfg) {
