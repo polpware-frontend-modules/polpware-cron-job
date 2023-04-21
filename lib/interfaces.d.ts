@@ -17,7 +17,7 @@ export interface IScheduleTime {
     dayOfMonth?: number;
     dayOfWeek?: number;
 }
-export declare function getDefaultScheduleTime(): IScheduleTime;
+export declare function getDefaultScheduleTime(startFromToday?: boolean): IScheduleTime;
 export declare function isEqualString(left: string, right: string): boolean;
 export declare function isEqualDate(left: Date, right: Date): boolean;
 export declare function isEqualTime(left: Date, right: Date): boolean;

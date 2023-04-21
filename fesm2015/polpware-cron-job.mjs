@@ -107,10 +107,12 @@ var ScheduleTypeEnum;
     ScheduleTypeEnum[ScheduleTypeEnum["OneTime"] = 1] = "OneTime";
     ScheduleTypeEnum[ScheduleTypeEnum["Recurrent"] = 2] = "Recurrent";
 })(ScheduleTypeEnum || (ScheduleTypeEnum = {}));
-function getDefaultScheduleTime() {
+function getDefaultScheduleTime(startFromToday = false) {
     const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    let tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    if (startFromToday) {
+        tomorrow = new Date(today.getTime() + (60 * 60 * 1000));
+    }
     return {
         isRecurrent: false,
         recurrence: 0,
@@ -120,7 +122,7 @@ function getDefaultScheduleTime() {
         customExpr: '',
         startDate: tomorrow,
         endDate: null,
-        time: today,
+        time: tomorrow,
         monthOfYear: MonthEnum.January,
         dayOfMonth: 1,
         dayOfWeek: DayOfWeekEnum.Monday
