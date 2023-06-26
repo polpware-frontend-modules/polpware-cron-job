@@ -1,5 +1,6 @@
 export declare const defaultDict: {
     polpCronJob: {
+        asap: string;
         scheduleType: string;
         recurrence: string;
         customExpr: string;

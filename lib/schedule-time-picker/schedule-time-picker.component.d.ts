@@ -10,6 +10,7 @@ import * as i0 from "@angular/core";
 export interface ISettings extends IDefaultFormInputs {
     hideSubmitBtn?: boolean;
     hideCancelBtn?: boolean;
+    enableAsap?: boolean;
 }
 export interface IFormFields {
     scheduleType: number;
@@ -75,6 +76,7 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     protected updateFormData(data: IScheduleTime): void;
     protected updateFieldVisibility(a: IFormFields): void;
     protected computeOutValue(a: IFormFields): IScheduleTime;
+    protected getAsapValue(): IScheduleTime;
     protected getOneTimeValue(a: IFormFields): IScheduleTime;
     protected getRecurrentValue(a: IFormFields): IScheduleTime;
     confirm(): void;

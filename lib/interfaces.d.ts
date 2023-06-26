@@ -1,7 +1,8 @@
 import { IntervalEnum } from '@polpware/fe-utilities';
 export declare enum ScheduleTypeEnum {
     OneTime = 1,
-    Recurrent = 2
+    Recurrent = 2,
+    Asap = 3
 }
 export interface IScheduleTime {
     isRecurrent: boolean;

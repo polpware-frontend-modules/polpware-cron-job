@@ -9,9 +9,9 @@ export class CronJobHyperTransPipe extends HyperTranslatePipeBase {
         this._ref = _ref;
     }
 }
-CronJobHyperTransPipe.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.11", ngImport: i0, type: CronJobHyperTransPipe, deps: [{ token: i1.CronJobTranslatorService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Pipe });
-CronJobHyperTransPipe.ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "12.0.0", version: "13.3.11", ngImport: i0, type: CronJobHyperTransPipe, name: "cronJobHyperTrans", pure: false });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.11", ngImport: i0, type: CronJobHyperTransPipe, decorators: [{
+CronJobHyperTransPipe.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.3.12", ngImport: i0, type: CronJobHyperTransPipe, deps: [{ token: i1.CronJobTranslatorService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Pipe });
+CronJobHyperTransPipe.ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "12.0.0", version: "13.3.12", ngImport: i0, type: CronJobHyperTransPipe, name: "cronJobHyperTrans", pure: false });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.12", ngImport: i0, type: CronJobHyperTransPipe, decorators: [{
             type: Pipe,
             args: [{
                     name: 'cronJobHyperTrans',
