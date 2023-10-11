@@ -754,51 +754,102 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.3.12", ngImpo
 class CronJobService {
     constructor() { }
     parseCronExpr(source, target) {
+        // Above is the UTC representation        
         const a = parseExpression(source);
         // Case 1 (every year)
         if (a.fields.month.length == 1 && a.fields.dayOfMonth.length == 1) {
             target.recurrence = IntervalEnum.Year;
+            // utc time
+            const today = new Date();
+            const timeInUtc = new Date(Date.UTC(today.getFullYear(), a.fields.month[0], parseInt(a.fields.dayOfMonth[0].toString(), 10), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
+            // Time
+            target.dayOfMonth = timeInUtc.getDate();
+            target.monthOfYear = timeInUtc.getMonth();
+            target.time = timeInUtc;
         }
         else if (a.fields.month.length == 12 &&
             a.fields.dayOfMonth.length == 1 &&
             a.fields.dayOfWeek.length == 8) {
             target.recurrence = IntervalEnum.Month;
+            // utc time
+            const today = new Date();
+            const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), parseInt(a.fields.dayOfMonth[0].toString(), 10), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
+            // Time
+            target.dayOfMonth = timeInUtc.getDate();
+            target.time = timeInUtc;
         }
         else if (a.fields.month.length == 12 &&
             a.fields.dayOfMonth.length == 31 &&
             a.fields.dayOfWeek.length == 1) {
             target.recurrence = IntervalEnum.Week;
+            // utc time
+            const today = new Date();
+            const weekOfDay = a.fields.dayOfWeek[0];
+            const daysToAdd = weekOfDay - today.getDay();
+            today.setDate(today.getDate() + daysToAdd);
+            const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
+            // Time
+            target.dayOfWeek = timeInUtc.getDay();
+            target.time = timeInUtc;
         }
         else if (a.fields.month.length == 12 &&
             a.fields.dayOfMonth.length == 31 &&
             a.fields.dayOfWeek.length == 8) {
             target.recurrence = IntervalEnum.Day;
+            // utc time
+            const today = new Date();
+            const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
+            // Time
+            target.time = timeInUtc;
         }
         else {
             target.recurrence = IntervalEnum.Custom;
+            // todo:
+            // A utc time 
+            const today = new Date();
+            const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
+            target.time = timeInUtc;
         }
-        // A utc time 
-        const today = new Date();
-        const timeInUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), a.fields.hour[0] || 0, a.fields.minute[0] || 0));
-        // Time
-        target.time = timeInUtc;
     }
     composeCronExpr(source) {
         // IsRecurrent true
-        // Convert it into Utc time
-        const utc = new Date(source.time);
-        const timeWrapper = moment(utc);
-        const hour = timeWrapper.utc().hour();
         if (source.recurrence == IntervalEnum.Year) {
-            return `${utc.getMinutes()} ${hour} ${source.dayOfMonth} ${source.monthOfYear} *`;
+            // Convert it into Utc time
+            const utc = new Date(source.time);
+            utc.setDate(source.dayOfMonth);
+            utc.setMonth(source.monthOfYear);
+            const timeWrapper = moment(utc);
+            const hour = timeWrapper.utc().hour();
+            const dayOfMonth = timeWrapper.utc().daysInMonth();
+            const monthOfYear = timeWrapper.utc().month();
+            // The difference of hours can lead to the change of the other things.
+            return `${utc.getMinutes()} ${hour} ${dayOfMonth} ${monthOfYear} *`;
         }
         else if (source.recurrence == IntervalEnum.Month) {
-            return `${utc.getMinutes()} ${hour} ${source.dayOfMonth} * *`;
+            // Convert it into Utc time
+            const utc = new Date(source.time);
+            utc.setDate(source.dayOfMonth);
+            const timeWrapper = moment(utc);
+            const hour = timeWrapper.utc().hour();
+            const dayOfMonth = timeWrapper.utc().daysInMonth();
+            return `${utc.getMinutes()} ${hour} ${dayOfMonth} * *`;
         }
         else if (source.recurrence == IntervalEnum.Week) {
-            return `${utc.getMinutes()} ${hour} * * ${source.dayOfWeek}`;
+            // Convert it into Utc time
+            const utc = new Date(source.time);
+            let sourceDayOfWeek = source.dayOfWeek;
+            let currentDay = utc.getDay();
+            let distance = sourceDayOfWeek - currentDay;
+            utc.setDate(utc.getDate() + distance);
+            const timeWrapper = moment(utc);
+            const hour = timeWrapper.utc().hour();
+            const dayOfWeek = timeWrapper.utc().day();
+            return `${utc.getMinutes()} ${hour} * * ${dayOfWeek}`;
         }
         else if (source.recurrence == IntervalEnum.Day) {
+            const utc = new Date(source.time);
+            const timeWrapper = moment(utc);
+            const hour = timeWrapper.utc().hour();
             return `${utc.getMinutes()} ${hour} * * *`;
         }
         else if (source.recurrence == IntervalEnum.Custom) {
