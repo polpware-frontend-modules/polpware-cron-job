@@ -66,6 +66,7 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     isSaving: boolean;
     alertProvider: AlertDefaultImpl;
     private _subr;
+    private _stopEventPropagation;
     constructor(_builder: FormBuilder, _utils: LowLevelUtilsService);
     get alerts(): import("@polpware/ngx-alert").IAlertItem[];
     get isHolidaysExcluded(): any;

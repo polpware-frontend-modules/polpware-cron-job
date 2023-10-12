@@ -25,7 +25,6 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import * as i6 from '@40three/ngx-autofocus-directive';
 import { FtAutofocusModule } from '@40three/ngx-autofocus-directive';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -493,6 +492,7 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
         this.holidays = '';
         this.otherDays = '';
         this.alertProvider = new AlertDefaultImpl();
+        this._stopEventPropagation = false;
     }
     get alerts() {
         return this.alertProvider.data;
@@ -522,8 +522,10 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
         }
         this._subr = this.form.valueChanges.subscribe(a => {
             this.updateFieldVisibility(a);
-            this.notifyValidation();
-            this.notifyValueChanges(this.computeOutValue(a));
+            if (!this._stopEventPropagation) {
+                this.notifyValidation();
+                this.notifyValueChanges(this.computeOutValue(a));
+            }
         });
     }
     ngOnDestroy() {
@@ -531,7 +533,9 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
     }
     ngOnChanges(data) {
         if (data && data.initValue && !data.initValue.firstChange) {
+            this._stopEventPropagation = true;
             this.updateFormData(data.initValue.currentValue);
+            this._stopEventPropagation = false;
         }
     }
     updateFormData(data) {
@@ -815,42 +819,42 @@ class CronJobService {
         // IsRecurrent true
         if (source.recurrence == IntervalEnum.Year) {
             // Convert it into Utc time
-            const utc = new Date(source.time);
-            utc.setDate(source.dayOfMonth);
-            utc.setMonth(source.monthOfYear);
-            const timeWrapper = moment(utc);
-            const hour = timeWrapper.utc().hour();
-            const dayOfMonth = timeWrapper.utc().daysInMonth();
-            const monthOfYear = timeWrapper.utc().month();
+            const localTime = new Date(source.time);
+            localTime.setDate(source.dayOfMonth);
+            localTime.setMonth(source.monthOfYear);
+            const min = localTime.getUTCMinutes();
+            const hour = localTime.getUTCHours();
+            const dayOfMonth = localTime.getUTCDate();
+            const monthOfYear = localTime.getUTCMonth();
             // The difference of hours can lead to the change of the other things.
-            return `${utc.getMinutes()} ${hour} ${dayOfMonth} ${monthOfYear} *`;
+            return `${min} ${hour} ${dayOfMonth} ${monthOfYear} *`;
         }
         else if (source.recurrence == IntervalEnum.Month) {
             // Convert it into Utc time
-            const utc = new Date(source.time);
-            utc.setDate(source.dayOfMonth);
-            const timeWrapper = moment(utc);
-            const hour = timeWrapper.utc().hour();
-            const dayOfMonth = timeWrapper.utc().daysInMonth();
-            return `${utc.getMinutes()} ${hour} ${dayOfMonth} * *`;
+            const localTime = new Date(source.time);
+            localTime.setDate(source.dayOfMonth);
+            const min = localTime.getUTCMinutes();
+            const hour = localTime.getUTCHours();
+            const dayOfMonth = localTime.getUTCDate();
+            return `${min} ${hour} ${dayOfMonth} * *`;
         }
         else if (source.recurrence == IntervalEnum.Week) {
             // Convert it into Utc time
-            const utc = new Date(source.time);
+            const localTime = new Date(source.time);
             let sourceDayOfWeek = source.dayOfWeek;
-            let currentDay = utc.getDay();
+            let currentDay = localTime.getDay();
             let distance = sourceDayOfWeek - currentDay;
-            utc.setDate(utc.getDate() + distance);
-            const timeWrapper = moment(utc);
-            const hour = timeWrapper.utc().hour();
-            const dayOfWeek = timeWrapper.utc().day();
-            return `${utc.getMinutes()} ${hour} * * ${dayOfWeek}`;
+            localTime.setDate(localTime.getDate() + distance);
+            const min = localTime.getUTCMinutes();
+            const hour = localTime.getUTCHours();
+            const dayOfWeek = localTime.getUTCDay();
+            return `${min} ${hour} * * ${dayOfWeek}`;
         }
         else if (source.recurrence == IntervalEnum.Day) {
-            const utc = new Date(source.time);
-            const timeWrapper = moment(utc);
-            const hour = timeWrapper.utc().hour();
-            return `${utc.getMinutes()} ${hour} * * *`;
+            const localTime = new Date(source.time);
+            const min = localTime.getUTCMinutes();
+            const hour = localTime.getUTCHours();
+            return `${min} ${hour} * * *`;
         }
         else if (source.recurrence == IntervalEnum.Custom) {
             return source.customExpr;
