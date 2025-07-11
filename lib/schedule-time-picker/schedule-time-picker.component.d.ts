@@ -1,5 +1,5 @@
 import { EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { IChildModalState } from '@polpware/bs-components';
 import { IntervalEnum } from '@polpware/fe-utilities';
 import { AlertDefaultImpl, IHasAlertFeature } from '@polpware/ngx-alert';
@@ -35,7 +35,7 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     childStateChanged: EventEmitter<IChildModalState>;
     settings: ISettings;
     prefix: string;
-    form: FormGroup;
+    form: UntypedFormGroup;
     scheduleTypeOptions: {
         value: ScheduleTypeEnum;
         text: string;
@@ -67,7 +67,7 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     alertProvider: AlertDefaultImpl;
     private _subr;
     private _stopEventPropagation;
-    constructor(_builder: FormBuilder, _utils: LowLevelUtilsService);
+    constructor(_builder: UntypedFormBuilder, _utils: LowLevelUtilsService);
     get alerts(): import("@polpware/ngx-alert").IAlertItem[];
     get isHolidaysExcluded(): any;
     get isOthersExcluded(): any;
@@ -85,5 +85,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     updateHolidaysAsync(): Promise<void>;
     updateOtherDaysAsync(): Promise<void>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ScheduleTimePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; "defaultHolidays": "defaultHolidays"; }, { "childStateChanged": "childStateChanged"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; "defaultHolidays": "defaultHolidays"; }, { "childStateChanged": "childStateChanged"; }, never, never, false>;
 }
+//# sourceMappingURL=schedule-time-picker.component.d.ts.map

@@ -24,3 +24,4 @@ export declare function isEqualDate(left: Date, right: Date): boolean;
 export declare function isEqualTime(left: Date, right: Date): boolean;
 export declare function isEqualBool(left: boolean, right: boolean): boolean;
 export declare function isEqualScheduleTime(left: IScheduleTime, right: IScheduleTime): boolean;
+//# sourceMappingURL=interfaces.d.ts.map

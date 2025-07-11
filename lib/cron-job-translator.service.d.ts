@@ -5,3 +5,4 @@ export declare class CronJobTranslatorService extends NgxTranslatorImplService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CronJobTranslatorService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<CronJobTranslatorService>;
 }
+//# sourceMappingURL=cron-job-translator.service.d.ts.map

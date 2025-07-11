@@ -7,5 +7,6 @@ export declare class CronJobHyperTransPipe extends HyperTranslatePipeBase {
     protected _ref: ChangeDetectorRef;
     constructor(_translate: CronJobTranslatorService, _ref: ChangeDetectorRef);
     static ɵfac: i0.ɵɵFactoryDeclaration<CronJobHyperTransPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<CronJobHyperTransPipe, "cronJobHyperTrans">;
+    static ɵpipe: i0.ɵɵPipeDeclaration<CronJobHyperTransPipe, "cronJobHyperTrans", false>;
 }
+//# sourceMappingURL=cron-job-hyper-trans.pipe.d.ts.map

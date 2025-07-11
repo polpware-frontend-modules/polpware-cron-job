@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { DefaultFormBaseComponent } from '@polpware/ngx-form-common';
 import * as i0 from "@angular/core";
 export declare class MultiDatePickerComponent extends DefaultFormBaseComponent implements OnInit {
@@ -11,12 +11,13 @@ export declare class MultiDatePickerComponent extends DefaultFormBaseComponent i
         display: any;
         value: any;
     }>;
-    form: FormGroup;
+    form: UntypedFormGroup;
     private _subr;
-    constructor(_builder: FormBuilder);
+    constructor(_builder: UntypedFormBuilder);
     ngOnInit(): void;
     ngOnDestroy(): void;
     confirm(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<MultiDatePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDatePickerComponent, "polp-bs-multi-date-picker", never, { "initValue": "initValue"; }, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDatePickerComponent, "polp-bs-multi-date-picker", never, { "initValue": "initValue"; }, {}, never, never, false>;
 }
+//# sourceMappingURL=multi-date-picker.component.d.ts.map

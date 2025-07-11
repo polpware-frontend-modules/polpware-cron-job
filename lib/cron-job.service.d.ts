@@ -7,3 +7,4 @@ export declare class CronJobService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CronJobService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<CronJobService>;
 }
+//# sourceMappingURL=cron-job.service.d.ts.map
