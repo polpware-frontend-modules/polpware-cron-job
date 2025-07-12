@@ -28,6 +28,6 @@ export declare class MultiDateModalComponent extends ObservableModalAbstractComp
     }): void;
     confirm(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<MultiDateModalComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDateModalComponent, "polp-bs-multi-date-modal", never, { "title": "title"; "initValue": "initValue"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDateModalComponent, "polp-bs-multi-date-modal", never, { "title": { "alias": "title"; "required": false; }; "initValue": { "alias": "initValue"; "required": false; }; }, {}, never, never, false, never>;
 }
 //# sourceMappingURL=multi-date-modal.component.d.ts.map

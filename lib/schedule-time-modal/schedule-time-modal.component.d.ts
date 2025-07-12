@@ -37,6 +37,6 @@ export declare class ScheduleTimeModalComponent extends ObservableModalAbstractC
     updateStyle(evt: IChildModalState): void;
     confirmAsync(): Promise<void>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ScheduleTimeModalComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimeModalComponent, "polp-bs-schedule-time-modal", never, { "title": "title"; "initSettings": "initSettings"; "initValue": "initValue"; "onConfirmAsync": "onConfirmAsync"; "extraClasses": "extraClasses"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimeModalComponent, "polp-bs-schedule-time-modal", never, { "title": { "alias": "title"; "required": false; }; "initSettings": { "alias": "initSettings"; "required": false; }; "initValue": { "alias": "initValue"; "required": false; }; "onConfirmAsync": { "alias": "onConfirmAsync"; "required": false; }; "extraClasses": { "alias": "extraClasses"; "required": false; }; }, {}, never, never, false, never>;
 }
 //# sourceMappingURL=schedule-time-modal.component.d.ts.map

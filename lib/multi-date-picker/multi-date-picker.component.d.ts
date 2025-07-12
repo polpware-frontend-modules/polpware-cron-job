@@ -18,6 +18,6 @@ export declare class MultiDatePickerComponent extends DefaultFormBaseComponent i
     ngOnDestroy(): void;
     confirm(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<MultiDatePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDatePickerComponent, "polp-bs-multi-date-picker", never, { "initValue": "initValue"; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MultiDatePickerComponent, "polp-bs-multi-date-picker", never, { "initValue": { "alias": "initValue"; "required": false; }; }, {}, never, never, false, never>;
 }
 //# sourceMappingURL=multi-date-picker.component.d.ts.map

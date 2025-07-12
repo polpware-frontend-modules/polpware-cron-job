@@ -1,16 +1,16 @@
 {
   "name": "@polpware/cron-job",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0",
-    "ngx-bootstrap": "^10.0.0",
-    "@polpware/fe-utilities": "^15.0.0",
-    "@polpware/ngx-alert": "^15.0.0",
-    "@polpware/ngx-i18n": "^15.0.0",
-    "@polpware/ngx-form-common": "^15.0.0",
-    "@polpware/modal-directives": "^13.0.0",
-    "@40three/ngx-autofocus-directive": "^15.0.0",
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0",
+    "ngx-bootstrap": "^11.0.0",
+    "@polpware/fe-utilities": "^16.0.0",
+    "@polpware/ngx-alert": "^16.0.0",
+    "@polpware/ngx-i18n": "^16.0.0",
+    "@polpware/ngx-form-common": "^16.0.0",
+    "@polpware/modal-directives": "^16.0.0",
+    "@40three/ngx-autofocus-directive": "^16.0.0",
     "cron-parser": "^4.5.0",
     "ngx-chips": "~3.0.0",
     "moment": "^2.29.1"
@@ -18,11 +18,7 @@
   "dependencies": {
     "tslib": "^2.0.0"
   },
-  "module": "fesm2015/polpware-cron-job.mjs",
-  "es2020": "fesm2020/polpware-cron-job.mjs",
-  "esm2020": "esm2020/polpware-cron-job.mjs",
-  "fesm2020": "fesm2020/polpware-cron-job.mjs",
-  "fesm2015": "fesm2015/polpware-cron-job.mjs",
+  "module": "fesm2022/polpware-cron-job.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -30,11 +26,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/polpware-cron-job.mjs",
-      "es2020": "./fesm2020/polpware-cron-job.mjs",
-      "es2015": "./fesm2015/polpware-cron-job.mjs",
-      "node": "./fesm2015/polpware-cron-job.mjs",
-      "default": "./fesm2020/polpware-cron-job.mjs"
+      "esm2022": "./esm2022/polpware-cron-job.mjs",
+      "esm": "./esm2022/polpware-cron-job.mjs",
+      "default": "./fesm2022/polpware-cron-job.mjs"
     }
   },
   "sideEffects": false,
