@@ -85,6 +85,6 @@ export declare class ScheduleTimePickerComponent extends DefaultFormBaseComponen
     updateHolidaysAsync(): Promise<void>;
     updateOtherDaysAsync(): Promise<void>;
     static ɵfac: i0.ɵɵFactoryDeclaration<ScheduleTimePickerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; "defaultHolidays": "defaultHolidays"; }, { "childStateChanged": "childStateChanged"; }, never, never, false>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ScheduleTimePickerComponent, "polp-bs-schedule-time-picker", never, { "initSettings": "initSettings"; "initValue": "initValue"; "defaultHolidays": "defaultHolidays"; }, { "childStateChanged": "childStateChanged"; }, never, never, false, never>;
 }
 //# sourceMappingURL=schedule-time-picker.component.d.ts.map
