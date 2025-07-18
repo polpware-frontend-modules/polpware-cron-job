@@ -201,7 +201,7 @@ class CronJobTranslatorService extends NgxTranslatorImplService {
         super();
         this._dict = defaultDict;
     }
-    static { this.ɵfac = function CronJobTranslatorService_Factory(t) { return new (t || CronJobTranslatorService)(); }; }
+    static { this.ɵfac = function CronJobTranslatorService_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || CronJobTranslatorService)(); }; }
     static { this.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: CronJobTranslatorService, factory: CronJobTranslatorService.ɵfac }); }
 }
 (() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(CronJobTranslatorService, [{
@@ -214,7 +214,7 @@ class CronJobHyperTransPipe extends HyperTranslatePipeBase {
         this._translate = _translate;
         this._ref = _ref;
     }
-    static { this.ɵfac = function CronJobHyperTransPipe_Factory(t) { return new (t || CronJobHyperTransPipe)(i0.ɵɵdirectiveInject(CronJobTranslatorService, 16), i0.ɵɵdirectiveInject(i0.ChangeDetectorRef, 16)); }; }
+    static { this.ɵfac = function CronJobHyperTransPipe_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || CronJobHyperTransPipe)(i0.ɵɵdirectiveInject(CronJobTranslatorService, 16), i0.ɵɵdirectiveInject(i0.ChangeDetectorRef, 16)); }; }
     static { this.ɵpipe = /*@__PURE__*/ i0.ɵɵdefinePipe({ name: "cronJobHyperTrans", type: CronJobHyperTransPipe, pure: false }); }
 }
 (() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(CronJobHyperTransPipe, [{
@@ -311,7 +311,7 @@ class MultiDatePickerComponent extends DefaultFormBaseComponent {
             });
         }
     }
-    static { this.ɵfac = function MultiDatePickerComponent_Factory(t) { return new (t || MultiDatePickerComponent)(i0.ɵɵdirectiveInject(i1.UntypedFormBuilder)); }; }
+    static { this.ɵfac = function MultiDatePickerComponent_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || MultiDatePickerComponent)(i0.ɵɵdirectiveInject(i1.UntypedFormBuilder)); }; }
     static { this.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: MultiDatePickerComponent, selectors: [["polp-bs-multi-date-picker"]], inputs: { initValue: "initValue" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 12, vars: 15, consts: [[3, "ngSubmit"], [1, "mb-4"], [1, "form-label", 3, "for"], [1, "input-group"], ["type", "text", "bsDatepicker", "", 1, "form-control", 3, "ngModelChange", "id", "bsConfig", "ngModelOptions", "ngModel"], ["type", "submit", 1, "btn", "btn-info"], [3, "formGroup"], [3, "formControlName"]], template: function MultiDatePickerComponent_Template(rf, ctx) { if (rf & 1) {
             i0.ɵɵelementStart(0, "form", 0);
             i0.ɵɵlistener("ngSubmit", function MultiDatePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
@@ -412,7 +412,7 @@ class MultiDateModalComponent extends ObservableModalAbstractComponent {
             this.closeModal(this.outputValue);
         }
     }
-    static { this.ɵfac = function MultiDateModalComponent_Factory(t) { return new (t || MultiDateModalComponent)(i0.ɵɵdirectiveInject(i1$1.BsModalRef), i0.ɵɵdirectiveInject(i1$1.BsModalService)); }; }
+    static { this.ɵfac = function MultiDateModalComponent_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || MultiDateModalComponent)(i0.ɵɵdirectiveInject(i1$1.BsModalRef), i0.ɵɵdirectiveInject(i1$1.BsModalService)); }; }
     static { this.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: MultiDateModalComponent, selectors: [["polp-bs-multi-date-modal"]], inputs: { title: "title", initValue: "initValue" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 9, consts: [["polpModalDraggable", "", 1, "modal-header"], [1, "modal-title"], [1, "modal-body"], [3, "onValidation", "onValueChanged", "initValue"], [4, "ngFor", "ngForOf"], [1, "modal-footer"], [1, "d-flex", "justify-content-end"], [1, "btn", "btn-secondary", "me-2", 3, "click"], ["type", "button", "class", "btn btn-primary", 3, "click", 4, "ngIf"], [3, "type", "dismissOnTimeout"], ["type", "button", 1, "btn", "btn-primary", 3, "click"]], template: function MultiDateModalComponent_Template(rf, ctx) { if (rf & 1) {
             i0.ɵɵelementStart(0, "div", 0)(1, "h4", 1);
             i0.ɵɵtext(2);
@@ -467,7 +467,7 @@ class LowLevelUtilsService {
         });
         return modalRef.content.result.toPromise();
     }
-    static { this.ɵfac = function LowLevelUtilsService_Factory(t) { return new (t || LowLevelUtilsService)(i0.ɵɵinject(i1$1.BsModalService)); }; }
+    static { this.ɵfac = function LowLevelUtilsService_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || LowLevelUtilsService)(i0.ɵɵinject(i1$1.BsModalService)); }; }
     static { this.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: LowLevelUtilsService, factory: LowLevelUtilsService.ɵfac, providedIn: 'root' }); }
 }
 (() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(LowLevelUtilsService, [{
@@ -1175,7 +1175,7 @@ class ScheduleTimePickerComponent extends DefaultFormBaseComponent {
             this.notifyValueChanges(this.computeOutValue(this.form.value));
         }
     }
-    static { this.ɵfac = function ScheduleTimePickerComponent_Factory(t) { return new (t || ScheduleTimePickerComponent)(i0.ɵɵdirectiveInject(i1.UntypedFormBuilder), i0.ɵɵdirectiveInject(LowLevelUtilsService)); }; }
+    static { this.ɵfac = function ScheduleTimePickerComponent_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || ScheduleTimePickerComponent)(i0.ɵɵdirectiveInject(i1.UntypedFormBuilder), i0.ɵɵdirectiveInject(LowLevelUtilsService)); }; }
     static { this.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: ScheduleTimePickerComponent, selectors: [["polp-bs-schedule-time-picker"]], inputs: { initSettings: "initSettings", initValue: "initValue", defaultHolidays: "defaultHolidays" }, outputs: { childStateChanged: "childStateChanged" }, features: [i0.ɵɵInheritDefinitionFeature, i0.ɵɵNgOnChangesFeature], decls: 15, vars: 15, consts: [[3, "ngSubmit", "formGroup"], ["class", "mb-3 row", 4, "ngIf"], [4, "ngFor", "ngForOf"], ["class", "d-flex justify-content-end mb-4", 4, "ngIf"], [1, "mb-3", "row"], [1, "col-12", "col-md-4", "col-form-label"], [1, "col-12", "col-md-8"], ["class", "form-check form-check-inline", 4, "ngFor", "ngForOf"], ["class", "d-block form-text text-warning my-1", 4, "ngIf"], [1, "form-check", "form-check-inline"], ["formControlName", "scheduleType", "type", "radio", 1, "form-check-input", 3, "id", "value"], [1, "form-check-label", 3, "for"], [1, "d-block", "form-text", "text-warning", "my-1"], [1, "col-12", "col-md-4", "col-form-label", 3, "for"], ["formControlName", "recurrence", 1, "form-control", 3, "id"], ["selected", "", "value", ""], [3, "value", 4, "ngFor", "ngForOf"], [3, "value"], ["type", "text", "formControlName", "customExpr", 1, "form-control", 3, "autofocus", "id", "aria-describedby"], ["class", "form-text text-warning d-block my-1", 3, "id", 4, "ngIf"], [1, "form-text", "text-warning", "d-block", "my-1", 3, "id"], ["type", "text", "bsDatepicker", "", "formControlName", "startDate", 1, "form-control", 3, "id", "bsConfig"], ["formControlName", "monthOfYear", 1, "form-control", 3, "id"], ["selected", ""], ["formControlName", "dayOfMonth", 1, "form-control", 3, "id"], ["formControlName", "dayOfWeek", 1, "form-control", 3, "id"], ["formControlName", "time", 3, "id"], [1, "form-check"], ["type", "checkbox", "formControlName", "excludeHolidays", 1, "form-check-input", "position-static", 3, "id"], [4, "ngIf"], [1, "btn", "btn-link", "text-info", 3, "click"], ["type", "checkbox", "formControlName", "excludeWeekends", 1, "form-check-input", "position-static", 3, "id"], ["type", "checkbox", "formControlName", "excludeOthers", 1, "form-check-input", "position-static", 3, "id"], ["type", "text", "bsDatepicker", "", "formControlName", "endDate", 1, "form-control", 3, "id", "bsConfig"], [3, "type", "dismissOnTimeout"], [1, "d-flex", "justify-content-end", "mb-4"], ["type", "button", "class", "btn btn-warning", 3, "click", 4, "ngIf"], ["type", "submit", "class", "btn btn-success", 4, "ngIf"], ["type", "button", 1, "btn", "btn-warning", 3, "click"], ["type", "submit", 1, "btn", "btn-success"]], template: function ScheduleTimePickerComponent_Template(rf, ctx) { if (rf & 1) {
             i0.ɵɵelementStart(0, "form", 0);
             i0.ɵɵlistener("ngSubmit", function ScheduleTimePickerComponent_Template_form_ngSubmit_0_listener() { return ctx.confirm(); });
@@ -1319,7 +1319,7 @@ class ScheduleTimeModalComponent extends ObservableModalAbstractComponent {
             this.isSaving = false;
         }
     }
-    static { this.ɵfac = function ScheduleTimeModalComponent_Factory(t) { return new (t || ScheduleTimeModalComponent)(i0.ɵɵdirectiveInject(i1$1.BsModalRef), i0.ɵɵdirectiveInject(i1$1.BsModalService)); }; }
+    static { this.ɵfac = function ScheduleTimeModalComponent_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || ScheduleTimeModalComponent)(i0.ɵɵdirectiveInject(i1$1.BsModalRef), i0.ɵɵdirectiveInject(i1$1.BsModalService)); }; }
     static { this.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: ScheduleTimeModalComponent, selectors: [["polp-bs-schedule-time-modal"]], inputs: { title: "title", initSettings: "initSettings", initValue: "initValue", onConfirmAsync: "onConfirmAsync", extraClasses: "extraClasses" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 10, consts: [["polpModalDraggable", "", 1, "modal-header"], [1, "modal-title"], [1, "modal-body"], [3, "childStateChanged", "onValidation", "onValueChanged", "initSettings", "initValue"], [4, "ngFor", "ngForOf"], [1, "modal-footer"], [1, "d-flex", "justify-content-end"], [1, "btn", "btn-secondary", "me-2", 3, "click"], ["type", "button", "class", "btn btn-primary", 3, "click", 4, "ngIf"], [3, "type", "dismissOnTimeout"], ["type", "button", 1, "btn", "btn-primary", 3, "click"], ["class", "ms-1", 3, "icon", "spin", 4, "ngIf"], [1, "ms-1", 3, "icon", "spin"]], template: function ScheduleTimeModalComponent_Template(rf, ctx) { if (rf & 1) {
             i0.ɵɵelementStart(0, "div", 0)(1, "h4", 1);
             i0.ɵɵtext(2);
@@ -1472,7 +1472,7 @@ class CronJobService {
         }
         return '';
     }
-    static { this.ɵfac = function CronJobService_Factory(t) { return new (t || CronJobService)(); }; }
+    static { this.ɵfac = function CronJobService_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || CronJobService)(); }; }
     static { this.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: CronJobService, factory: CronJobService.ɵfac, providedIn: 'root' }); }
 }
 (() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(CronJobService, [{
@@ -1496,7 +1496,7 @@ class UtilsService {
         });
         return modalRef.content.result.toPromise();
     }
-    static { this.ɵfac = function UtilsService_Factory(t) { return new (t || UtilsService)(i0.ɵɵinject(i1$1.BsModalService)); }; }
+    static { this.ɵfac = function UtilsService_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || UtilsService)(i0.ɵɵinject(i1$1.BsModalService)); }; }
     static { this.ɵprov = /*@__PURE__*/ i0.ɵɵdefineInjectable({ token: UtilsService, factory: UtilsService.ɵfac, providedIn: 'root' }); }
 }
 (() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(UtilsService, [{
@@ -1507,7 +1507,7 @@ class UtilsService {
     }], () => [{ type: i1$1.BsModalService }], null); })();
 
 class PolpBsCronJobModule {
-    static { this.ɵfac = function PolpBsCronJobModule_Factory(t) { return new (t || PolpBsCronJobModule)(); }; }
+    static { this.ɵfac = function PolpBsCronJobModule_Factory(__ngFactoryType__) { return new (__ngFactoryType__ || PolpBsCronJobModule)(); }; }
     static { this.ɵmod = /*@__PURE__*/ i0.ɵɵdefineNgModule({ type: PolpBsCronJobModule }); }
     static { this.ɵinj = /*@__PURE__*/ i0.ɵɵdefineInjector({ imports: [CommonModule,
             FormsModule,
